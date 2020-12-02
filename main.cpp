@@ -23,7 +23,7 @@ int main() {
             }
         }
 
-        gameWindow.clear(Color::Cyan);
+        gameWindow.clear(Color::Black);
         gameWindow.display();
 
     }
