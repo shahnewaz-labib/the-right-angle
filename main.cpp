@@ -7,6 +7,8 @@
 #define NUMBER_OF_OPTIONS 3
 
 bool MENU_STATE = true;
+bool GAME_STATE = false;
+bool KEY_PRESSED = false;
 
 using namespace sf;
 using namespace std;
@@ -19,7 +21,7 @@ public:
     void show(RenderWindow &menuWindow);
     void goUp();
     void goDown();
-
+    int selectedOptionIndex;
 private:
     Font menuTextFont;
     Text menuText[NUMBER_OF_OPTIONS];
@@ -27,7 +29,8 @@ private:
 
 Menu::Menu(float menuWidth, float menuHeight) {
     menuTextFont.loadFromFile("fonts/12th_C._Fancy_Caps.ttf");
-    
+    selectedOptionIndex = 0;
+
     menuText[0].setFont(menuTextFont);
     menuText[0].setColor(Color::Red);
     menuText[0].setString("Play");
@@ -51,8 +54,21 @@ void Menu::show(RenderWindow &menuWindow) {
 }
 
 void Menu::goDown() {
-
+    if(selectedOptionIndex + 1 < NUMBER_OF_OPTIONS) {
+        menuText[selectedOptionIndex].setColor(Color::White);
+        selectedOptionIndex++;
+        menuText[selectedOptionIndex].setColor(Color::Red);
+    }
 }
+
+void Menu::goUp() {
+    if(selectedOptionIndex - 1 >= 0) {
+        menuText[selectedOptionIndex].setColor(Color::White);
+        selectedOptionIndex--;
+        menuText[selectedOptionIndex].setColor(Color::Red);
+    }
+}
+
 
 int main() {
     
@@ -72,16 +88,29 @@ int main() {
             if(e.type == sf::Event::Closed || Keyboard::isKeyPressed(Keyboard::Key::Q)) {
                 gameWindow.close();
             }
-            if(MENU_STATE == true && Keyboard::isKeyPressed(Keyboard::Return)) {
-                MENU_STATE = false;
-            }
-            if(MENU_STATE == false && Keyboard::isKeyPressed(Keyboard::Escape)) {
-                MENU_STATE = true;
+
+            if(MENU_STATE) {
+                if(Keyboard::isKeyPressed(Keyboard::Return) and menuWindow.selectedOptionIndex == 0) {
+                    MENU_STATE = false;
+                    GAME_STATE = true;
+                }
+                if(Keyboard::isKeyPressed(Keyboard::Up)) {
+                    menuWindow.goUp();
+                }
+                if(Keyboard::isKeyPressed(Keyboard::Down)) {
+                    menuWindow.goDown();
+                }
+
             }
 
-            // if(Keyboard::isKeyPressed(Keyboard::Return)) {
-            //     MENU_STATE = !MENU_STATE;
-            // }
+            if(GAME_STATE == true && Keyboard::isKeyPressed(Keyboard::Escape)) {
+                MENU_STATE = true;
+                GAME_STATE = false;
+            }
+            
+            
+            
+
         }
 
         if(MENU_STATE) gameWindow.clear(Color::Black);
@@ -92,8 +121,6 @@ int main() {
         gameWindow.display();
 
     }
-
-    cout<<"Hi there"<<"\n";
 
     return 0;
 }
