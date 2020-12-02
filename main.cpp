@@ -90,9 +90,17 @@ int main() {
             }
 
             if(MENU_STATE) {
-                if(Keyboard::isKeyPressed(Keyboard::Return) and menuWindow.selectedOptionIndex == 0) {
-                    MENU_STATE = false;
-                    GAME_STATE = true;
+                if(Keyboard::isKeyPressed(Keyboard::Return)) {
+
+                    switch(menuWindow.selectedOptionIndex) {
+                        case 0:
+                            MENU_STATE = false;
+                            GAME_STATE = true;
+                            break;
+                        case 2:
+                            gameWindow.close();
+                            break;
+                    }
                 }
                 if(Keyboard::isKeyPressed(Keyboard::Up)) {
                     menuWindow.goUp();
