@@ -51,7 +51,7 @@ void Menu::show(RenderWindow &menuWindow) {
 }
 
 void Menu::goDown() {
-    
+
 }
 
 int main() {
@@ -93,7 +93,7 @@ int main() {
 
     }
 
-    cout<<"hello world"<<"\n";
+    cout<<"Hi there"<<"\n";
 
     return 0;
 }
