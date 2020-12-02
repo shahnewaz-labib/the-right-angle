@@ -76,7 +76,6 @@ int main() {
     RenderWindow gameWindow(VideoMode(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT), "The Right Angle!");
 
     // Menu window
-    // Menu menuWindow(300, 300);
     Menu menuWindow(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
 
     while(gameWindow.isOpen()) {
