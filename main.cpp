@@ -50,7 +50,9 @@ void Menu::show(RenderWindow &menuWindow) {
     }
 }
 
-
+void Menu::goDown() {
+    
+}
 
 int main() {
     
