@@ -1,6 +1,6 @@
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include <iostream>
 #include <SFML/Graphics.hpp>
-
 #define GAME_WINDOW_WIDTH 500
 #define GAME_WINDOW_HEIGHT 500
 
