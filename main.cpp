@@ -1,18 +1,15 @@
-
-#include <iostream>
-#include "menu.h"
 #include <SFML/Graphics.hpp>
+#include "menu.h"
+#include "connector.h"
 
 #define GAME_WINDOW_WIDTH 500
 #define GAME_WINDOW_HEIGHT 500
-
 
 bool MENU_STATE = true;
 bool GAME_STATE = false;
 bool KEY_PRESSED = false;
 
 using namespace sf;
-using namespace std;
 
 
 int main() {
@@ -25,11 +22,12 @@ int main() {
 
     while(gameWindow.isOpen()) {
         // To capture keypresses
-        sf::Event e;
+        Event event;
         
         // Handle KB or Mouse actions
-        while(gameWindow.pollEvent(e)) {
-            if(e.type == sf::Event::Closed || Keyboard::isKeyPressed(Keyboard::Key::Q)) {
+        while(gameWindow.pollEvent(event)) {
+
+            if(event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Key::Q)) {
                 gameWindow.close();
             }
 
@@ -38,10 +36,12 @@ int main() {
 
                     switch(menuWindow.selectedOptionIndex) {
                         case 0:
+                            // Plat button pressed, enter game state
                             MENU_STATE = false;
                             GAME_STATE = true;
                             break;
                         case 2:
+                            // Exit button pressed, close game
                             gameWindow.close();
                             break;
                     }
@@ -54,15 +54,13 @@ int main() {
                 }
 
             }
-
+            
+            // Esc pressed, return to menu state
             if(GAME_STATE == true && Keyboard::isKeyPressed(Keyboard::Escape)) {
                 MENU_STATE = true;
                 GAME_STATE = false;
             }
             
-            
-            
-
         }
 
         if(MENU_STATE) gameWindow.clear(Color::Black);
