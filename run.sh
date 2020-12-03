@@ -1,4 +1,4 @@
-clear
 make
-make clean
 ./main.exe
+make clean
+clear

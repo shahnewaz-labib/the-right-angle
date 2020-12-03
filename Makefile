@@ -13,3 +13,4 @@ connector.o: connector.cpp connector.h
 
 clean:
 	rm *.o
+	rm *.exe
