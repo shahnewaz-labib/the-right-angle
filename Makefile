@@ -1,5 +1,5 @@
 output: main.o menu.o connector.o
-	g++ main.o menu.o connector.o -o main.exe -lsfml-graphics -lsfml-window -lsfml-system
+	g++ main.o menu.o connector.o -o main.exe -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 main.o: main.cpp
 	g++ -std=c++11 -c main.cpp

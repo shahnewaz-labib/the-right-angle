@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "menu.h"
 #include "connector.h"
 
@@ -20,6 +21,17 @@ int main() {
     // Menu window
     Menu menuWindow(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
 
+    // Sound
+    SoundBuffer clickSoundBuffer;
+    clickSoundBuffer.loadFromFile("sounds/logout.ogg");
+    Sound clickSound;
+    clickSound.setBuffer(clickSoundBuffer);
+
+    // SoundBuffer menuOptionsSoundBuffer;
+    // menuOptionsSoundBuffer.loadFromFile("sounds/roblox-death-sound_1.ogg");
+    // Sound menuOptionsSound;
+    // menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
+
     while(gameWindow.isOpen()) {
         // To capture keypresses
         Event event;
@@ -30,13 +42,16 @@ int main() {
             if(event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Key::Q)) {
                 gameWindow.close();
             }
+            if(event.type == Event::MouseButtonPressed) {
+                clickSound.play();
+            }
 
             if(MENU_STATE) {
                 if(Keyboard::isKeyPressed(Keyboard::Return)) {
 
                     switch(menuWindow.selectedOptionIndex) {
                         case 0:
-                            // Plat button pressed, enter game state
+                            // Play button pressed, enter game state
                             MENU_STATE = false;
                             GAME_STATE = true;
                             break;
@@ -47,9 +62,11 @@ int main() {
                     }
                 }
                 if(Keyboard::isKeyPressed(Keyboard::Up)) {
+                    // menuOptionsSound.play();
                     menuWindow.goUp();
                 }
                 if(Keyboard::isKeyPressed(Keyboard::Down)) {
+                    // menuOptionsSound.play();
                     menuWindow.goDown();
                 }
 
