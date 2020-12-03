@@ -4,7 +4,7 @@
 using namespace sf;
 
 Menu::Menu(float menuWidth, float menuHeight) {
-    menuTextFont.loadFromFile("fonts/12th_C._Fancy_Caps.ttf");
+    menuTextFont.loadFromFile("fonts/3Dumb.ttf");
     selectedOptionIndex = 0;
 
     menuText[0].setFont(menuTextFont);
