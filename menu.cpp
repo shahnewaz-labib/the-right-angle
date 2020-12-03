@@ -34,6 +34,10 @@ void Menu::goDown() {
         menuText[selectedOptionIndex].setColor(Color::White);
         selectedOptionIndex++;
         menuText[selectedOptionIndex].setColor(Color::Red);
+    } else {
+        menuText[selectedOptionIndex].setColor(Color::White);
+        selectedOptionIndex = 0;
+        menuText[selectedOptionIndex].setColor(Color::Red);
     }
 }
 
@@ -41,6 +45,10 @@ void Menu::goUp() {
     if(selectedOptionIndex - 1 >= 0) {
         menuText[selectedOptionIndex].setColor(Color::White);
         selectedOptionIndex--;
+        menuText[selectedOptionIndex].setColor(Color::Red);
+    } else {
+        menuText[selectedOptionIndex].setColor(Color::White);
+        selectedOptionIndex = NUMBER_OF_OPTIONS - 1;
         menuText[selectedOptionIndex].setColor(Color::Red);
     }
 }
