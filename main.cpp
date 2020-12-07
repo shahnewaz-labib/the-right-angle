@@ -27,10 +27,10 @@ int main() {
     Sound clickSound;
     clickSound.setBuffer(clickSoundBuffer);
 
-    // SoundBuffer menuOptionsSoundBuffer;
-    // menuOptionsSoundBuffer.loadFromFile("sounds/roblox-death-sound_1.ogg");
-    // Sound menuOptionsSound;
-    // menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
+    SoundBuffer menuOptionsSoundBuffer;
+    menuOptionsSoundBuffer.loadFromFile("sounds/roblox-death-sound_1.ogg");
+    Sound menuOptionsSound;
+    menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
 
     while(gameWindow.isOpen()) {
         // To capture keypresses
@@ -62,11 +62,11 @@ int main() {
                     }
                 }
                 if(Keyboard::isKeyPressed(Keyboard::Up)) {
-                    // menuOptionsSound.play();
+                    menuOptionsSound.play();
                     menuWindow.goUp();
                 }
                 if(Keyboard::isKeyPressed(Keyboard::Down)) {
-                    // menuOptionsSound.play();
+                    menuOptionsSound.play();
                     menuWindow.goDown();
                 }
 
