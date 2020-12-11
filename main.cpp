@@ -97,13 +97,14 @@ int main() {
 
     // Textures
     Texture background;
-    background.loadFromFile("images\\background1.jpg");
+    background.loadFromFile("images\\background2.jpg");
 
     // Sprites
     Sprite bgSprite;
     bgSprite.setTexture(background);
 
     //* sprite.setTextureRect(sf::IntRect(10, 10, 32, 32)); we can specify rect
+    // bgSprite.setTextureRect(IntRect(0, 0, 612, 408));
 
     int n = rand()%10+2;
     generate(n);
@@ -138,6 +139,7 @@ int main() {
                         case 2:
                             // Exit button pressed, close game
                             gameWindow.close();
+                            exit(0);
                             break;
                     }
                 }
@@ -160,16 +162,7 @@ int main() {
                     GAME_STATE = false;
                     goto sheshe;
                 }
-                if(event.type == Event::MouseButtonPressed) {
-                    clickSound.play();
-                    // now, if any tile is clicked, see the changes it made i.e. update the orientation
-                    // of the connectors
-
-                }
-                if(INIT) {
-                    show(n);
-                    INIT = false;
-                }
+                
 
             }
             
@@ -191,7 +184,7 @@ int main() {
     }
 
     sheshe:
-    RenderWindow w1(VideoMode(100*n, 100*n), "Another window");
+    RenderWindow w1(VideoMode(65*n, 65*n), "Another window");
 
     while(w1.isOpen()) {
         Event event;
@@ -204,8 +197,15 @@ int main() {
                 w1.close();
                 goto oikhane;
             }
+            if(event.type == Event::MouseButtonPressed) {
+                    clickSound.play();
+                    // now, if any tile is clicked, see the changes it made i.e. update the orientation
+                    // of the connectors
+            }
+                
         }
-        w1.clear(Color::Green);
+        // w1.clear(Color::Green);
+        w1.draw(bgSprite);
         w1.display();
     }
 
