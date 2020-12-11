@@ -65,6 +65,14 @@ void generate(int N) {
 
 }
 
+void show(int N) {
+    for(int i = 0; i < N; i++, std::cout << std::endl) {
+        for(int j = 0; j < N; j++) {
+            std::cout << grid[i][j].dirs.size() << " ";
+        }
+    }
+}
+
 
 int main() {
     
@@ -136,6 +144,11 @@ int main() {
                 if(event.type == Event::MouseButtonPressed) {
                     clickSound.play();
                 }
+                int n = 5;
+                // Note: Generates a puzzle for every key press while in 'Play' mode.
+                // gotta find a way to capture only one key press.
+                generate(n);
+                show(n);
 
             }
             
