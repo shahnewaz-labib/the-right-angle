@@ -76,7 +76,7 @@ void show(int N) {
 
 
 int main() {
-    
+    oikhane:
     // Main game window
     RenderWindow gameWindow(VideoMode(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT), "The Right Angle!");
     gameWindow.setKeyRepeatEnabled(false);
@@ -117,6 +117,7 @@ int main() {
 
             if(event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Key::Q)) {
                 gameWindow.close();
+                exit(0);
             }
             
 
@@ -128,6 +129,8 @@ int main() {
                             // Play button pressed, enter game state
                             MENU_STATE = false;
                             GAME_STATE = true;
+                            gameWindow.close();
+                            goto sheshe;
                             break;
                         case 1:
                             // Do something cool
@@ -152,10 +155,11 @@ int main() {
             
             if(GAME_STATE) {
                 // Esc pressed, return to menu state
-                // if(Keyboard::isKeyPressed(Keyboard::Escape)) {
-                //     MENU_STATE = true;
-                //     GAME_STATE = false;
-                // }
+                if(Keyboard::isKeyPressed(Keyboard::Escape)) {
+                    MENU_STATE = true;
+                    GAME_STATE = false;
+                    goto sheshe;
+                }
                 if(event.type == Event::MouseButtonPressed) {
                     clickSound.play();
                     // now, if any tile is clicked, see the changes it made i.e. update the orientation
@@ -184,6 +188,25 @@ int main() {
 
         gameWindow.display();
 
+    }
+
+    sheshe:
+    RenderWindow w1(VideoMode(100*n, 100*n), "Another window");
+
+    while(w1.isOpen()) {
+        Event event;
+        while(w1.pollEvent(event)) {
+            if(event.type == Event::Closed)
+                w1.close();
+            if(Keyboard::isKeyPressed(Keyboard::Escape)) {
+                MENU_STATE = true;
+                GAME_STATE = false;
+                w1.close();
+                goto oikhane;
+            }
+        }
+        w1.clear(Color::Green);
+        w1.display();
     }
 
     return 0;
