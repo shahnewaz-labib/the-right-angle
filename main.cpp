@@ -71,6 +71,7 @@ void show(int N) {
             std::cout << grid[i][j].dirs.size() << " ";
         }
     }
+    std::cout << "------------------\n";
 }
 
 
@@ -93,6 +94,8 @@ int main() {
     Sound menuOptionsSound;
     menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
 
+    gameWindow.setKeyRepeatEnabled(false);
+    int count = 0;
     while(gameWindow.isOpen()) {
         // To capture keypresses
         Event event;
@@ -137,23 +140,23 @@ int main() {
             
             // Esc pressed, return to menu state
             if(GAME_STATE) {
-                if(Keyboard::isKeyPressed(Keyboard::Escape)) {
-                    MENU_STATE = true;
-                    GAME_STATE = false;
-                }
+                // if(Keyboard::isKeyPressed(Keyboard::Escape)) {
+                //     MENU_STATE = true;
+                //     GAME_STATE = false;
+                // }
                 if(event.type == Event::MouseButtonPressed) {
                     clickSound.play();
                 }
                 int n = 5;
-                // Note: Generates a puzzle for every key press while in 'Play' mode.
-                // gotta find a way to capture only one key press.
-                generate(n);
-                show(n);
+                if(INIT) {
+                    generate(n);
+                    INIT = false;
+                }
 
             }
             
         }
-
+        std::cout << ++count << std::endl;
         if(MENU_STATE) gameWindow.clear(Color::Black);
         else gameWindow.clear(Color::Cyan);
 

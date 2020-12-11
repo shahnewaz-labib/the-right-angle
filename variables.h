@@ -4,6 +4,9 @@
 #define GLOBAL_VARIABLES
 #include <SFML/Graphics.hpp>
 
+// Init
+bool INIT = true;
+
 // Window sizes
 float GAME_WINDOW_WIDTH = 500;
 float GAME_WINDOW_HEIGHT = 500;
