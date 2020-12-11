@@ -1,14 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+
+#include "variables.h"
 #include "menu.h"
 #include "connector.h"
 
-#define GAME_WINDOW_WIDTH 500
-#define GAME_WINDOW_HEIGHT 500
-
-bool MENU_STATE = true;
-bool GAME_STATE = false;
-bool KEY_PRESSED = false;
 
 using namespace sf;
 
@@ -42,9 +38,7 @@ int main() {
             if(event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Key::Q)) {
                 gameWindow.close();
             }
-            if(event.type == Event::MouseButtonPressed) {
-                clickSound.play();
-            }
+            
 
             if(MENU_STATE) {
                 if(Keyboard::isKeyPressed(Keyboard::Return)) {
@@ -54,6 +48,9 @@ int main() {
                             // Play button pressed, enter game state
                             MENU_STATE = false;
                             GAME_STATE = true;
+                            break;
+                        case 1:
+                            // Do something cool
                             break;
                         case 2:
                             // Exit button pressed, close game
@@ -69,13 +66,20 @@ int main() {
                     menuOptionsSound.play();
                     menuWindow.goDown();
                 }
+                
 
             }
             
             // Esc pressed, return to menu state
-            if(GAME_STATE == true && Keyboard::isKeyPressed(Keyboard::Escape)) {
-                MENU_STATE = true;
-                GAME_STATE = false;
+            if(GAME_STATE) {
+                if(Keyboard::isKeyPressed(Keyboard::Escape)) {
+                    MENU_STATE = true;
+                    GAME_STATE = false;
+                }
+                if(event.type == Event::MouseButtonPressed) {
+                    clickSound.play();
+                }
+
             }
             
         }
