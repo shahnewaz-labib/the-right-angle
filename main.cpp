@@ -71,7 +71,7 @@ void show(int N) {
             std::cout << grid[i][j].dirs.size() << " ";
         }
     }
-    std::cout << "------------------\n";
+    std::cout << "----------------\n";
 }
 
 
@@ -79,6 +79,7 @@ int main() {
     
     // Main game window
     RenderWindow gameWindow(VideoMode(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT), "The Right Angle!");
+    gameWindow.setKeyRepeatEnabled(false);
 
     // Menu window
     Menu menuWindow(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
@@ -94,8 +95,19 @@ int main() {
     Sound menuOptionsSound;
     menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
 
-    gameWindow.setKeyRepeatEnabled(false);
-    int count = 0;
+    // Textures
+    Texture background;
+    background.loadFromFile("images\\background1.jpg");
+
+    // Sprites
+    Sprite bgSprite;
+    bgSprite.setTexture(background);
+
+    //* sprite.setTextureRect(sf::IntRect(10, 10, 32, 32)); we can specify rect
+
+    int n = rand()%10+2;
+    generate(n);
+
     while(gameWindow.isOpen()) {
         // To capture keypresses
         Event event;
@@ -138,29 +150,37 @@ int main() {
 
             }
             
-            // Esc pressed, return to menu state
             if(GAME_STATE) {
+                // Esc pressed, return to menu state
                 // if(Keyboard::isKeyPressed(Keyboard::Escape)) {
                 //     MENU_STATE = true;
                 //     GAME_STATE = false;
                 // }
                 if(event.type == Event::MouseButtonPressed) {
                     clickSound.play();
+                    // now, if any tile is clicked, see the changes it made i.e. update the orientation
+                    // of the connectors
+
                 }
-                int n = 5;
                 if(INIT) {
-                    generate(n);
+                    show(n);
                     INIT = false;
                 }
 
             }
             
         }
-        std::cout << ++count << std::endl;
-        if(MENU_STATE) gameWindow.clear(Color::Black);
-        else gameWindow.clear(Color::Cyan);
-
-        if(MENU_STATE) menuWindow.show(gameWindow);
+        if(MENU_STATE) {
+            gameWindow.clear(Color::Black);
+        }
+        else if(GAME_STATE) {
+            gameWindow.clear(Color::Cyan);
+            // draw background
+            gameWindow.draw(bgSprite);
+        }
+        if(MENU_STATE) {
+            menuWindow.show(gameWindow);
+        }
 
         gameWindow.display();
 
