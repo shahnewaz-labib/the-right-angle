@@ -4,6 +4,7 @@ using namespace sf;
 
 
 Connector grid[MAX][MAX];
+
 Connector& cell(Vector2i v) {
     return grid[v.x][v.y];
 }
@@ -66,6 +67,17 @@ void show(int N) {
     std::cout << "----------------\n";
 }
 
+
+void drop(Vector2i v,int N)
+{
+   if (cell(v).on) return;
+   cell(v).on=true;
+
+   for(auto d:DIR)
+    if (!isOut(v+d,N))
+     if (cell(v).isConnected(d) && cell(v+d).isConnected(-d))
+       drop(v+d,N);
+}
 
 
 
