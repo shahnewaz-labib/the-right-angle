@@ -71,16 +71,18 @@ int main() {
                                 goto sheshe;
                                 break;
                             case 1:
-                                // Do something cool
+                                // Added level cycling
+                                menuWindow.levelup();
                                 break;
                             case 2:
+                                // Do something cool
+                                break;
+                            case 3:
                                 // Exit button pressed, close game
                                 gameWindow.close();
                                 exit(0);
                                 break;
-                            case 3:
-                                // Added level cycling
-                                menuWindow.levelup();
+                            default:
                                 break;
                         }
                     }

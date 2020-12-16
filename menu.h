@@ -20,7 +20,8 @@ public:
     int selectedOptionIndex;
     //std::string currentleve;
     int currentlevel;
-    std::string levels[5] = {"random", "1", "2", "3", "4"};
+    std::string menucaption[NUMBER_OF_OPTIONS]={"Play","Change Level","Option","Exit"};
+    std::string levels[totallevels] = {"random", "1", "2", "3", "4"};
 
 private:
     sf::Font menuTextFont;

@@ -1,37 +1,31 @@
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Text.hpp>
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #include "menu.h"
+#include <string>
 
 using namespace sf;
+
+#define addEntry(MenuText,Fn,clr,caption,x,y){ \
+    MenuText.setFont(Fn); \
+    MenuText.setColor(clr); \
+    MenuText.setString(caption); \
+    MenuText.setPosition(Vector2f(x,y)); \
+}
 
 Menu::Menu(float menuWidth, float menuHeight) {
     menuTextFont.loadFromFile("fonts/3Dumb.ttf");
     selectedOptionIndex = 0;
+    int x=50,y=100;
 
-    menuText[0].setFont(menuTextFont);
-    menuText[0].setColor(Color::Red);
-    menuText[0].setString("Play");
-    menuText[0].setPosition(Vector2f(menuWidth/2+140, menuHeight/2-200));
+    addEntry(menuText[0],menuTextFont, Color::Red, menucaption[0] , x, y);
 
-    LevelText.setFont(menuTextFont);
-    LevelText.setColor(Color::White);
-    LevelText.setString("Level : "+levels[0]);
-    LevelText.setPosition(Vector2f(50,menuHeight/2-200));
+    addEntry(LevelText, menuTextFont, Color::White, "Level : "+levels[0] , x+170, y);
 
-    
-    menuText[1].setFont(menuTextFont);
-    menuText[1].setColor(Color::White);
-    menuText[1].setString("Options");
-    menuText[1].setPosition(Vector2f(menuWidth/2+90, menuHeight/4));
-
-    menuText[2].setFont(menuTextFont);
-    menuText[2].setColor(Color::White);
-    menuText[2].setString("Exit");
-    menuText[2].setPosition(Vector2f(menuWidth/2+130, menuHeight/2.5));
-
-    menuText[3].setFont(menuTextFont);
-    menuText[3].setColor(Color::White);
-    menuText[3].setString("Change Level");
-    menuText[3].setPosition(Vector2f(menuWidth/2+30, menuHeight/1.5));
+    for(int i=1;i<NUMBER_OF_OPTIONS;i++){
+        y+=70;
+        addEntry(menuText[i],menuTextFont,Color::White,menucaption[i],x,y);
+    } 
 }
 
 
