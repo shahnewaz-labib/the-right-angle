@@ -18,7 +18,8 @@ public:
     void goDown();
     void levelup();
     int selectedOptionIndex;
-    int currentlevel=0;
+    //std::string currentleve;
+    int currentlevel;
     std::string levels[5]={"random","3","1","4","2"};
 
 private:

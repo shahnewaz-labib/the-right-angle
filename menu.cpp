@@ -15,7 +15,7 @@ Menu::Menu(float menuWidth, float menuHeight) {
     LevelText.setFont(menuTextFont);
     LevelText.setColor(Color::White);
     LevelText.setString("Level : "+levels[0]);
-    LevelText.setPosition(Vector2f(menuWidth/2+140+150,menuHeight/2-200));
+    LevelText.setPosition(Vector2f(50,menuHeight/2-200));
 
     
     menuText[1].setFont(menuTextFont);
@@ -38,7 +38,7 @@ Menu::Menu(float menuWidth, float menuHeight) {
 
 void Menu::levelup(){
     currentlevel=(currentlevel+1)%totallevels;
-    LevelText.setString("Level : "+levels[currentlevel]);    
+    LevelText.setString("Level : " + levels[currentlevel]);    
 }
 
 

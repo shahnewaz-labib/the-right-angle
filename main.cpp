@@ -60,28 +60,29 @@ int main() {
             
 
             if(MENU_STATE) {
-                if(Keyboard::isKeyPressed(Keyboard::Return)) {
-
-                    switch(menuWindow.selectedOptionIndex) {
-                        case 0:
-                            // Play button pressed, enter game state
-                            MENU_STATE = false;
-                            GAME_STATE = true;
-                            gameWindow.close();
-                            goto sheshe;
-                            break;
-                        case 1:
-                            // Do something cool
-                            break;
-                        case 2:
-                            // Exit button pressed, close game
-                            gameWindow.close();
-                            exit(0);
-                            break;
-                        case 3:
-                            // Added level cycling
-                            menuWindow.levelup();
-                            break;
+                if(event.type == Event::KeyReleased) {
+                    if(event.key.code == Keyboard::Return) {
+                        switch(menuWindow.selectedOptionIndex) {
+                            case 0:
+                                // Play button pressed, enter game state
+                                MENU_STATE = false;
+                                GAME_STATE = true;
+                                gameWindow.close();
+                                goto sheshe;
+                                break;
+                            case 1:
+                                // Do something cool
+                                break;
+                            case 2:
+                                // Exit button pressed, close game
+                                gameWindow.close();
+                                exit(0);
+                                break;
+                            case 3:
+                                // Added level cycling
+                                menuWindow.levelup();
+                                break;
+                        }
                     }
                 }
                 if(Keyboard::isKeyPressed(Keyboard::Up)) {
@@ -126,7 +127,7 @@ int main() {
 
     sheshe:
     RenderWindow w1(VideoMode(65*n, 65*n), "Another window");
-
+    w1.setKeyRepeatEnabled(false);
     while(w1.isOpen()) {
         Event event;
         while(w1.pollEvent(event)) {
