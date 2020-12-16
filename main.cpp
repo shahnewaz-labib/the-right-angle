@@ -78,6 +78,10 @@ int main() {
                             gameWindow.close();
                             exit(0);
                             break;
+                        case 3:
+                            // Added level cycling
+                            menuWindow.levelup();
+                            break;
                     }
                 }
                 if(Keyboard::isKeyPressed(Keyboard::Up)) {

@@ -12,6 +12,12 @@ Menu::Menu(float menuWidth, float menuHeight) {
     menuText[0].setString("Play");
     menuText[0].setPosition(Vector2f(menuWidth/2+140, menuHeight/2-200));
 
+    LevelText.setFont(menuTextFont);
+    LevelText.setColor(Color::White);
+    LevelText.setString("Level : "+levels[0]);
+    LevelText.setPosition(Vector2f(menuWidth/2+140+150,menuHeight/2-200));
+
+    
     menuText[1].setFont(menuTextFont);
     menuText[1].setColor(Color::White);
     menuText[1].setString("Options");
@@ -21,13 +27,29 @@ Menu::Menu(float menuWidth, float menuHeight) {
     menuText[2].setColor(Color::White);
     menuText[2].setString("Exit");
     menuText[2].setPosition(Vector2f(menuWidth/2+130, menuHeight/2.5));
+
+    menuText[3].setFont(menuTextFont);
+    menuText[3].setColor(Color::White);
+    menuText[3].setString("Change Level");
+    menuText[3].setPosition(Vector2f(menuWidth/2+30, menuHeight/1.5));
 }
+
+
+
+void Menu::levelup(){
+    currentlevel=(currentlevel+1)%totallevels;
+    LevelText.setString("Level : "+levels[currentlevel]);    
+}
+
+
 
 void Menu::show(RenderWindow &menuWindow) {
     for(int i = 0; i < NUMBER_OF_OPTIONS; i++) {
         menuWindow.draw(menuText[i]);
     }
+    menuWindow.draw(LevelText);
 }
+
 
 void Menu::goDown() {
     if(selectedOptionIndex + 1 < NUMBER_OF_OPTIONS) {
@@ -52,3 +74,6 @@ void Menu::goUp() {
         menuText[selectedOptionIndex].setColor(Color::Red);
     }
 }
+
+
+

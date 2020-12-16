@@ -1,11 +1,12 @@
 #pragma once
 
+#include <SFML/Graphics/Text.hpp>
 #ifndef MENU
 #define MENU
 #include <SFML/Graphics.hpp>
 
-
-#define NUMBER_OF_OPTIONS 3
+#define totallevels 5
+#define NUMBER_OF_OPTIONS 4
 
 class Menu {
 public:
@@ -15,10 +16,15 @@ public:
     void show(sf::RenderWindow &menuWindow);
     void goUp();
     void goDown();
+    void levelup();
     int selectedOptionIndex;
+    int currentlevel=0;
+    std::string levels[5]={"random","3","1","4","2"};
+
 private:
     sf::Font menuTextFont;
     sf::Text menuText[NUMBER_OF_OPTIONS];
+    sf::Text LevelText;
 };
 
 #endif
