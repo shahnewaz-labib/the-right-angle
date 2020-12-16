@@ -20,7 +20,7 @@ public:
     int selectedOptionIndex;
     //std::string currentleve;
     int currentlevel;
-    std::string levels[5]={"random","3","1","4","2"};
+    std::string levels[5] = {"random", "1", "2", "3", "4"};
 
 private:
     sf::Font menuTextFont;
