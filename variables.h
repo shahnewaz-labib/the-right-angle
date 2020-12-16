@@ -4,6 +4,9 @@
 #define GLOBAL_VARIABLES
 #include <SFML/Graphics.hpp>
 
+enum OPTION_INDEX {
+    Play=0,Change_Level,Options,Exit //Play=0,Change_Level=1,..Exit=4
+};
 // Init
 bool INIT = true;
 

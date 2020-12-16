@@ -57,27 +57,26 @@ int main() {
                 gameWindow.close();
                 exit(0);
             }
-            
 
             if(MENU_STATE) {
                 if(event.type == Event::KeyReleased) {
                     if(event.key.code == Keyboard::Return) {
                         switch(menuWindow.selectedOptionIndex) {
-                            case 0:
+                            case OPTION_INDEX::Play:
                                 // Play button pressed, enter game state
                                 MENU_STATE = false;
                                 GAME_STATE = true;
                                 gameWindow.close();
                                 goto sheshe;
                                 break;
-                            case 1:
+                            case OPTION_INDEX::Change_Level:
                                 // Added level cycling
                                 menuWindow.levelup();
                                 break;
-                            case 2:
+                            case OPTION_INDEX::Options:
                                 // Do something cool
                                 break;
-                            case 3:
+                            case OPTION_INDEX::Exit:
                                 // Exit button pressed, close game
                                 gameWindow.close();
                                 exit(0);
