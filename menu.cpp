@@ -46,28 +46,15 @@ void Menu::show(RenderWindow &menuWindow) {
 
 
 void Menu::goDown() {
-    if(selectedOptionIndex + 1 < NUMBER_OF_OPTIONS) {
-        menuText[selectedOptionIndex].setColor(Color::White);
-        selectedOptionIndex++;
-        menuText[selectedOptionIndex].setColor(Color::Red);
-    } else {
-        menuText[selectedOptionIndex].setColor(Color::White);
-        selectedOptionIndex = 0;
-        menuText[selectedOptionIndex].setColor(Color::Red);
-    }
+    menuText[selectedOptionIndex].setColor(Color::White);
+    selectedOptionIndex=(selectedOptionIndex+1)%NUMBER_OF_OPTIONS;
+    menuText[selectedOptionIndex].setColor(Color::Red);
 }
 
 void Menu::goUp() {
-    if(selectedOptionIndex - 1 >= 0) {
-        menuText[selectedOptionIndex].setColor(Color::White);
-        selectedOptionIndex--;
-        menuText[selectedOptionIndex].setColor(Color::Red);
-    } else {
-        menuText[selectedOptionIndex].setColor(Color::White);
-        selectedOptionIndex = NUMBER_OF_OPTIONS - 1;
-        menuText[selectedOptionIndex].setColor(Color::Red);
-    }
+    menuText[selectedOptionIndex].setColor(Color::White);
+    selectedOptionIndex=(selectedOptionIndex+NUMBER_OF_OPTIONS-1)%NUMBER_OF_OPTIONS;
+    menuText[selectedOptionIndex].setColor(Color::Red);
 }
-
 
 
