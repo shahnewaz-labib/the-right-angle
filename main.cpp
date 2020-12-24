@@ -123,7 +123,7 @@ int main() {
         if(MENU_STATE) {
             menu.show(menuWindow);
         }
-
+        // std::cout << menu.currentlevel << "\n";
         menuWindow.display();
 
     }
@@ -131,6 +131,10 @@ int main() {
     sheshe:
     RenderWindow gameWindow(VideoMode(65*n, 65*n), "The Right Angle!");
     n = rand()%10+4;
+    // if(menu.currentlevel == 0) n = rand()%10+4;
+    // else n = menu.currentlevel*3;
+    // std::cout << n << "\n";
+
     generate(n);
     
     show(n);
