@@ -2,7 +2,6 @@
 *.o
 Program
 *.vim
-*.ps1
 .vs
 .vscode
 .vim
