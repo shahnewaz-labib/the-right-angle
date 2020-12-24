@@ -36,7 +36,7 @@ int main() {
 
     // Textures
     Texture background;
-    background.loadFromFile("background.jpg");
+    background.loadFromFile("images/background.jpg");
 
     // Sprites
     Sprite bgSprite;
