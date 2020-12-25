@@ -1,6 +1,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <unistd.h>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -15,6 +16,7 @@ using namespace sf;
 int n;
 
 int main() {
+    srand(time(0));
     oikhane:
     // Main game window
     RenderWindow menuWindow(VideoMode(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT), "The Right Angle!");
@@ -25,7 +27,7 @@ int main() {
 
     // Sound
     SoundBuffer clickSoundBuffer;
-    clickSoundBuffer.loadFromFile("sounds/logout.ogg");
+    clickSoundBuffer.loadFromFile("sounds/click.ogg");
     Sound clickSound;
     clickSound.setBuffer(clickSoundBuffer);
 
@@ -100,6 +102,7 @@ int main() {
                 }
                 if(Keyboard::isKeyPressed(Keyboard::Return)) {
                     // menuOptionsSound.play();
+                    if(menu.selectedOptionIndex != 3)
                     menuEnterPressSound.play();
                 }
                 
@@ -136,7 +139,6 @@ int main() {
     }
 
     sheshe:
-    n = rand()%10+4;
     RenderWindow gameWindow(VideoMode(65*n, 65*n), "The Right Angle!");
     // if(menu.currentlevel == 0) n = rand()%10+4;
     // else n = menu.currentlevel*3;
@@ -151,10 +153,12 @@ int main() {
         Event event;
         while(gameWindow.pollEvent(event)) {
             if(event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q)) {
+                // usleep(1000000); // in microseconds
                 gameWindow.close();
             }
             if(Keyboard::isKeyPressed(Keyboard::Escape)) {
-                // menuEnterPressSound.play();
+                menuEnterPressSound.play();
+                usleep(1000000 / 5);
                 // std::cout << "here\n";
                 MENU_STATE = true;
                 GAME_STATE = false;

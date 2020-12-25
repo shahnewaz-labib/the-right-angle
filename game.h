@@ -27,9 +27,6 @@ void generate(int N) {
             continue;
         }
 
-        if(node(v).dirs.size() == 2) {
-            if(rand()%50) continue;
-        }
 
         bool complete = true;
         for(int i = 0; i < 4; i++) {
@@ -67,14 +64,18 @@ void show(int N) {
 }
 
 
-void drop(Vector2i v,int N) {
-   if (node(v).on) return;
-   node(v).on = true;
+void drop(Vector2i v, int N) {
+    if (node(v).on) return;
+    node(v).on = true;
 
-   for(auto d : DIR)
-    if (!isOutOfWindow(v + d, N))
-     if (node(v).isConnected(d) && node(v + d).isConnected(-d))
-       drop(v + d, N);
+    for(auto d : DIR) {
+        if(!isOutOfWindow(v + d, N)) {
+            if (node(v).isConnected(d) && node(v + d).isConnected(-d)) {
+                drop(v + d, N);
+            }
+        }
+    }
+
 }
 
 
