@@ -174,14 +174,7 @@ void SHOW_MENU()
     }
 }
 
-
-
-int main()
-{
-    srand(time(0));
-
-    // Menu window
-
+void init() {
     // Sound
     clickSoundBuffer.loadFromFile("sounds/click.ogg");
     clickSound.setBuffer(clickSoundBuffer);
@@ -199,6 +192,15 @@ int main()
 
     //* sprite.setTextureRect(sf::IntRect(10, 10, 32, 32)); we can specify rect
     // bgSprite.setTextureRect(IntRect(0, 0, 612, 408));
+}
+
+int main()
+{
+    srand(time(0));
+
+    // Menu window
+
+    init();
 
     //
 
