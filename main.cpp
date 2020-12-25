@@ -29,10 +29,12 @@ int main() {
     Sound clickSound;
     clickSound.setBuffer(clickSoundBuffer);
 
-    SoundBuffer menuOptionsSoundBuffer;
+    SoundBuffer menuOptionsSoundBuffer, menuEnterPressSoundBuffer;
     menuOptionsSoundBuffer.loadFromFile("sounds/menuClick.wav");
-    Sound menuOptionsSound;
+    menuEnterPressSoundBuffer.loadFromFile("sounds/enterPressed.wav");
+    Sound menuOptionsSound, menuEnterPressSound;
     menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
+    menuEnterPressSound.setBuffer(menuEnterPressSoundBuffer);
 
     // Textures
     Texture background;
@@ -96,6 +98,10 @@ int main() {
                     menuOptionsSound.play();
                     menu.goDown();
                 }
+                if(Keyboard::isKeyPressed(Keyboard::Return)) {
+                    // menuOptionsSound.play();
+                    menuEnterPressSound.play();
+                }
                 
 
             }
@@ -105,6 +111,7 @@ int main() {
                 if(Keyboard::isKeyPressed(Keyboard::Escape)) {
                     MENU_STATE = true;
                     GAME_STATE = false;
+
                     goto sheshe;
                 }
                 
@@ -129,8 +136,8 @@ int main() {
     }
 
     sheshe:
-    RenderWindow gameWindow(VideoMode(65*n, 65*n), "The Right Angle!");
     n = rand()%10+4;
+    RenderWindow gameWindow(VideoMode(65*n, 65*n), "The Right Angle!");
     // if(menu.currentlevel == 0) n = rand()%10+4;
     // else n = menu.currentlevel*3;
     // std::cout << n << "\n";
@@ -147,6 +154,8 @@ int main() {
                 gameWindow.close();
             }
             if(Keyboard::isKeyPressed(Keyboard::Escape)) {
+                // menuEnterPressSound.play();
+                // std::cout << "here\n";
                 MENU_STATE = true;
                 GAME_STATE = false;
                 gameWindow.close();
