@@ -1,7 +1,11 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#ifdef _WIN32
+#include <windows.h>
+#elif __linux__
 #include <unistd.h>
+#endif
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -51,7 +55,11 @@ void SHOW_GAME()
             if (Keyboard::isKeyPressed(Keyboard::Escape))
             {
                 menuEnterPressSound.play();
-                usleep(1000000 / 5);
+                #ifdef __linux__
+                    usleep(1000000 / 5);
+                #elif _WIN32
+                    sleep(1000 / 5);
+                #endif
                 // std::cout << "here\n";
                 MENU_STATE = true;
                 GAME_STATE = false;
@@ -196,11 +204,7 @@ int main()
 {
     srand(time(0));
 
-    // Menu window
-
     init();
-
-    //
 
     // oikhane:
     SHOW_MENU();
