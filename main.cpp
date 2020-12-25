@@ -165,8 +165,6 @@ void SHOW_MENU()
         
         if (MENU_STATE)
         {
-                    std::cout << "heresasdasdadas\n";
-            
             menu.show(menuWindow);
         }
         // std::cout << menu.currentlevel << "\n";
