@@ -1,6 +1,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+
 #ifdef _WIN32
 #include <windows.h>
 #elif __linux__
@@ -55,16 +56,16 @@ void SHOW_GAME()
             if (Keyboard::isKeyPressed(Keyboard::Escape))
             {
                 menuEnterPressSound.play();
+
                 #ifdef __linux__
                     usleep(1000000 / 5);
                 #elif _WIN32
                     sleep(1000 / 5);
                 #endif
-                // std::cout << "here\n";
+
                 MENU_STATE = true;
                 GAME_STATE = false;
                 gameWindow.close();
-                //goto oikhane;
                 SHOW_MENU();
 
             }
@@ -115,7 +116,6 @@ void SHOW_MENU()
                             MENU_STATE = false;
                             GAME_STATE = true;
                             menuWindow.close();
-                            //goto sheshe;
                             SHOW_GAME(); //
                             return;
                             break;
@@ -175,7 +175,6 @@ void SHOW_MENU()
         {
             menu.show(menuWindow);
         }
-        // std::cout << menu.currentlevel << "\n";
         menuWindow.display();
     }
 }
@@ -203,13 +202,7 @@ void init() {
 int main()
 {
     srand(time(0));
-
     init();
-
-    // oikhane:
     SHOW_MENU();
-
-    // sheshe:
-
     return 0;
 }
