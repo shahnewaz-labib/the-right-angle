@@ -33,6 +33,11 @@ void SHOW_MENU();
 void SHOW_GAME()
 {
     std::cout << "here\n";
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+           grid[i][j].dirs.clear(); 
+        }
+    }
     n = rand() % 10 + 2;
     RenderWindow gameWindow(VideoMode(65 * n, 65 * n), "The Right Angle!");
     // if(menu.currentlevel == 0) n = rand()%10+4;
