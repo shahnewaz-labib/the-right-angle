@@ -70,7 +70,6 @@ void SHOW_GAME()
         {
             if (event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q))
             {
-                // usleep(1000000); // in microseconds
                 gameWindow.close();
             }
             if (Keyboard::isKeyPressed(Keyboard::Escape))
@@ -213,7 +212,7 @@ void init() {
     bg.loadFromFile("images/background.png");
     comp.loadFromFile("images/comp.png");
     server.loadFromFile("images/server.png");
-    pipes.loadFromFile("images/pipe.png");
+    pipes.loadFromFile("images/pipes.png");
 
     // Sprites
     bgSprite.setTexture(bg);
