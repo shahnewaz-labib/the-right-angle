@@ -21,17 +21,23 @@ using namespace sf;
 int n;
 Menu menu(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
 
+// Sound
 SoundBuffer clickSoundBuffer;
 Sound clickSound;
 SoundBuffer menuOptionsSoundBuffer, menuEnterPressSoundBuffer;
 Sound menuOptionsSound, menuEnterPressSound;
-Texture background;
-Sprite bgSprite;
+
+// Texture
+Texture bg, comp, server, pipes;
+
+// Sprite
+Sprite bgSprite, compSprite, serverSprite, pipesSprite;
 
 void SHOW_MENU();
 
 void SHOW_GAME()
 {
+    
     std::cout << "here\n";
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < n; j++) {
@@ -40,6 +46,15 @@ void SHOW_GAME()
     }
     n = rand() % 10 + 2;
     RenderWindow gameWindow(VideoMode(65 * n, 65 * n), "The Right Angle!");
+    
+    Vector2u TextureSize = bg.getSize();
+    Vector2u WindowSize = gameWindow.getSize();
+
+    float ScaleX = (float) WindowSize.x / TextureSize.x;
+    float ScaleY = (float) WindowSize.y / TextureSize.y;
+
+    bgSprite.setScale(ScaleX, ScaleY); // Scaling the bg according to window size
+    
     // if(menu.currentlevel == 0) n = rand()%10+4;
     // else n = menu.currentlevel*3;
     // std::cout << n << "\n";
@@ -195,10 +210,16 @@ void init() {
     menuEnterPressSound.setBuffer(menuEnterPressSoundBuffer);
 
     // Textures
-    background.loadFromFile("images/background.jpg");
+    bg.loadFromFile("images/background.png");
+    comp.loadFromFile("images/comp.png");
+    server.loadFromFile("images/server.png");
+    pipes.loadFromFile("images/pipe.png");
 
     // Sprites
-    bgSprite.setTexture(background);
+    bgSprite.setTexture(bg);
+    compSprite.setTexture(comp);
+    serverSprite.setTexture(server);
+    pipesSprite.setTexture(pipes);
 
     //* sprite.setTextureRect(sf::IntRect(10, 10, 32, 32)); we can specify rect
     // bgSprite.setTextureRect(IntRect(0, 0, 612, 408));
