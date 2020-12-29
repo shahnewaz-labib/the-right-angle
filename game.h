@@ -27,6 +27,7 @@ void generate(int N) {
             continue;
         }
 
+        if(rand()%50) continue;
 
         bool complete = true;
         for(int i = 0; i < 4; i++) {

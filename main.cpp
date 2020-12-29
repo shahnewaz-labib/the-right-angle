@@ -139,13 +139,15 @@ void SHOW_GAME()
                     node(pos).orientation++;
                     node(pos).rotate();
 
-                    for(int i = 0; i < n; i++) {
-                        for(int j = 0; j < n; j++) {
-                            grid[i][j].on = false;
-                        }
-                    }
+                    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    // for(int i = 0; i < n; i++) {
+                    //     for(int j = 0; j < n; j++) {
+                    //         grid[i][j].on = false;
+                    //     }
+                    // }
 
-                    drop(servPos, n);
+                    // drop(servPos, n);
+                    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 }
             }
         }
@@ -171,8 +173,17 @@ void SHOW_GAME()
                 pipesSprite.setRotation(p.angle);
                 pipesSprite.setPosition(j * tileSize, i * tileSize);
                 pipesSprite.move(offset);
-                compSprite.move(offset);
                 gameWindow.draw(pipesSprite);
+
+                // if 1 then comp
+                if(kind == 1) {
+                    if(p.on) compSprite.setTextureRect(IntRect(53, 0, 36, 36));
+                    else compSprite.setTextureRect(IntRect(0, 0, 36, 36));
+                    compSprite.setPosition(j*tileSize, i*tileSize);
+                    compSprite.move(offset);
+                    gameWindow.draw(compSprite);
+                }
+
             }
         }
 
