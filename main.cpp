@@ -62,6 +62,23 @@ void SHOW_GAME()
 
     show(n);
 
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            Connector &p = grid[i][j];
+            for(int n = 4; n > 0; n--) {
+                std::string s = "";
+                for(auto d : DIR) s += p.isConnected(d) ? "1" : "0";
+
+                if(s == "0011" || s == "0111" || s == "0101" || "0010") p.orientation = n;
+                // p.rotate(); <<-- Implement this shit
+                for(int n = 0; rand()%4; n++) {
+                    grid[i][j].orientation++;
+                    // grid[i][j].rotate(); <<--
+                }
+            }
+        }
+    }
+
     gameWindow.setKeyRepeatEnabled(false);
     while (gameWindow.isOpen())
     {
