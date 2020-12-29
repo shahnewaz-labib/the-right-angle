@@ -120,8 +120,34 @@ void SHOW_GAME()
                 // of the connectors
             }
         }
-        // gameWindow.clear(Color::Green);
+        gameWindow.clear();
         gameWindow.draw(bgSprite);
+
+        // Update the pipe images according to the new orientation
+        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        // Does not work as expected
+        Vector2f offset(65, 55);
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                Connector &p = grid[i][j];
+                int kind = p.dirs.size();
+
+                if(kind == 2 && p.dirs[0] == -p.dirs[1]) kind = 0;
+
+                p.angle += 5;
+
+                p.angle = std::min(p.angle, p.orientation * 90);
+
+                pipesSprite.setTextureRect(IntRect(tileSize * kind, 0, tileSize, tileSize));
+                pipesSprite.setRotation(p.angle);
+                pipesSprite.setPosition(j*tileSize, i*tileSize);
+                compSprite.move(offset);
+                gameWindow.draw(pipesSprite);
+            }
+        }
+        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
         gameWindow.draw(serverSprite);
         gameWindow.display();
     }

@@ -63,7 +63,6 @@ void generate(int N) {
 
 int main() {
     srand(time(0));
-    std::cout << "All okay\n";
     int n = rand()%10+1;
     generate(n);
     for(int i = 0; i < n; i++) {
