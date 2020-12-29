@@ -19,6 +19,7 @@
 using namespace sf;
 
 int n;
+int tileSize = 54;
 Menu menu(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
 
 // Sound
@@ -44,7 +45,8 @@ void SHOW_GAME()
            grid[i][j].dirs.clear(); 
         }
     }
-    n = rand() % 10 + 2;
+    if(menu.currentlevel == 0) n = rand()%10+4;
+    else n = 2*menu.currentlevel+1;
     RenderWindow gameWindow(VideoMode(65 * n, 65 * n), "The Right Angle!");
     
     Vector2u TextureSize = bg.getSize();
@@ -55,9 +57,6 @@ void SHOW_GAME()
 
     bgSprite.setScale(ScaleX, ScaleY); // Scaling the bg according to window size
     
-    // if(menu.currentlevel == 0) n = rand()%10+4;
-    // else n = menu.currentlevel*3;
-    // std::cout << n << "\n";
     generate(n);
 
     show(n);
@@ -70,7 +69,7 @@ void SHOW_GAME()
                 for(auto d : DIR) s += p.isConnected(d) ? "1" : "0";
 
                 if(s == "0011" || s == "0111" || s == "0101" || "0010") p.orientation = n;
-                // p.rotate(); <<-- Implement this shit
+                p.rotate();
                 for(int n = 0; rand()%4; n++) {
                     grid[i][j].orientation++;
                     grid[i][j].rotate();
@@ -78,6 +77,15 @@ void SHOW_GAME()
             }
         }
     }
+
+    // Assign serverpos
+    Vector2i servPos = Vector2i(rand()%n, rand()%n);
+    while(node(servPos).dirs.size() == 1) {
+        servPos = Vector2i(rand()%n, rand()%n);
+    }
+
+    serverSprite.setPosition(Vector2f(servPos * tileSize));
+
 
     gameWindow.setKeyRepeatEnabled(false);
     while (gameWindow.isOpen())
@@ -114,6 +122,7 @@ void SHOW_GAME()
         }
         // gameWindow.clear(Color::Green);
         gameWindow.draw(bgSprite);
+        gameWindow.draw(serverSprite);
         gameWindow.display();
     }
 }
