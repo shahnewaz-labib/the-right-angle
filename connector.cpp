@@ -4,11 +4,11 @@
 #include <iostream>
 // #ifndef GLOBAL_VARIABLES
 // #endif
-// Connector::Connector() {
-//     angle = 0;
-//     // orientation = some_value;
+Connector::Connector() {
+    angle = 0;
+    // orientation = some_value;
 
-// }
+}
 
 bool Connector::isConnected(sf::Vector2i dir)
 {
@@ -19,9 +19,6 @@ bool Connector::isConnected(sf::Vector2i dir)
 extern sf::Vector2i DIR[4];
 extern sf::Vector2i Up,Down,Right,Left;
 void Connector::rotate() {
-    for(int i=0;i<4;i++){
-        std::cout<<DIR[i].x<<" "<<DIR[i].y<<"\n";
-    } 
     for(int i = 0; i < dirs.size(); i++) {
         if(dirs[i] == Up) dirs[i] = Right;
         else if(dirs[i] == Right) dirs[i] = Down;

@@ -34,6 +34,9 @@ Texture bg, comp, server, pipes;
 // Sprite
 Sprite bgSprite, compSprite, serverSprite, pipesSprite;
 
+Vector2f offset(65, 55);
+
+
 void SHOW_MENU();
 
 void SHOW_GAME()
@@ -45,8 +48,7 @@ void SHOW_GAME()
            grid[i][j].dirs.clear(); 
         }
     }
-    if(menu.currentlevel == 0) n = rand()%10+4;
-    else n = 2*menu.currentlevel+1;
+    n=rand()%7+4;
     RenderWindow gameWindow(VideoMode(65 * n, 65 * n), "The Right Angle!");
     
     Vector2u TextureSize = bg.getSize();
@@ -85,7 +87,7 @@ void SHOW_GAME()
     }
 
     serverSprite.setPosition(Vector2f(servPos * tileSize));
-
+    serverSprite.move(offset);
 
     gameWindow.setKeyRepeatEnabled(false);
     while (gameWindow.isOpen())
@@ -126,7 +128,6 @@ void SHOW_GAME()
         // Update the pipe images according to the new orientation
         // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         // Does not work as expected
-        Vector2f offset(65, 55);
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < n; j++) {
                 Connector &p = grid[i][j];
@@ -141,6 +142,7 @@ void SHOW_GAME()
                 pipesSprite.setTextureRect(IntRect(tileSize * kind, 0, tileSize, tileSize));
                 pipesSprite.setRotation(p.angle);
                 pipesSprite.setPosition(j*tileSize, i*tileSize);
+                pipesSprite.move(offset);
                 compSprite.move(offset);
                 gameWindow.draw(pipesSprite);
             }
@@ -265,13 +267,15 @@ void init() {
     comp.loadFromFile("images/comp.png");
     server.loadFromFile("images/server.png");
     pipes.loadFromFile("images/pipes.png");
-
+    pipes.setSmooth(1);
     // Sprites
     bgSprite.setTexture(bg);
     compSprite.setTexture(comp);
     serverSprite.setTexture(server);
     pipesSprite.setTexture(pipes);
-
+    pipesSprite.setOrigin(27,27);
+    serverSprite.setOrigin(20,20);
+    compSprite.setOrigin(18,18);
     //* sprite.setTextureRect(sf::IntRect(10, 10, 32, 32)); we can specify rect
     // bgSprite.setTextureRect(IntRect(0, 0, 612, 408));
 }

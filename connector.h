@@ -9,7 +9,7 @@
 class Connector {
     public:
         std::vector<sf::Vector2i> dirs;
-        // Connector();
+        Connector();
         int orientation, angle;
         bool isConnected(sf::Vector2i);
         bool on;
