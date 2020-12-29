@@ -36,43 +36,53 @@ Sprite bgSprite, compSprite, serverSprite, pipesSprite;
 
 Vector2f offset(65, 55);
 
-
 void SHOW_MENU();
 
 void SHOW_GAME()
 {
-    
+
     std::cout << "here\n";
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
-           grid[i][j].dirs.clear(); 
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            grid[i][j].dirs.clear();
         }
     }
-    n=rand()%7+4;
+    if (menu.currentlevel == 0)
+        n = rand() % 7 + 4;
+    else
+        n = menu.currentlevel + 4;
     RenderWindow gameWindow(VideoMode(65 * n, 65 * n), "The Right Angle!");
-    
+
     Vector2u TextureSize = bg.getSize();
     Vector2u WindowSize = gameWindow.getSize();
 
-    float ScaleX = (float) WindowSize.x / TextureSize.x;
-    float ScaleY = (float) WindowSize.y / TextureSize.y;
+    float ScaleX = (float)WindowSize.x / TextureSize.x;
+    float ScaleY = (float)WindowSize.y / TextureSize.y;
 
     bgSprite.setScale(ScaleX, ScaleY); // Scaling the bg according to window size
-    
+
     generate(n);
 
     show(n);
 
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
             Connector &p = grid[i][j];
-            for(int n = 4; n > 0; n--) {
+            for (int n = 4; n > 0; n--)
+            {
                 std::string s = "";
-                for(auto d : DIR) s += p.isConnected(d) ? "1" : "0";
+                for (auto d : DIR)
+                    s += p.isConnected(d) ? "1" : "0";
 
-                if(s == "0011" || s == "0111" || s == "0101" || "0010") p.orientation = n;
+                if (s == "0011" || s == "0111" || s == "0101" || "0010")
+                    p.orientation = n;
                 p.rotate();
-                for(int n = 0; rand()%4; n++) {
+                for (int n = 0; rand() % 4; n++)
+                {
                     grid[i][j].orientation++;
                     grid[i][j].rotate();
                 }
@@ -81,9 +91,10 @@ void SHOW_GAME()
     }
 
     // Assign serverpos
-    Vector2i servPos = Vector2i(rand()%n, rand()%n);
-    while(node(servPos).dirs.size() == 1) {
-        servPos = Vector2i(rand()%n, rand()%n);
+    Vector2i servPos = Vector2i(rand() % n, rand() % n);
+    while (node(servPos).dirs.size() == 1)
+    {
+        servPos = Vector2i(rand() % n, rand() % n);
     }
 
     serverSprite.setPosition(Vector2f(servPos * tileSize));
@@ -103,37 +114,54 @@ void SHOW_GAME()
             {
                 menuEnterPressSound.play();
 
-                #ifdef __linux__
-                    usleep(1000000 / 5);
-                #elif _WIN32
-                    sleep(1000 / 5);
-                #endif
+#ifdef __linux__
+                usleep(1000000 / 5);
+#elif _WIN32
+                sleep(1000 / 5);
+#endif
 
                 MENU_STATE = true;
                 GAME_STATE = false;
                 gameWindow.close();
                 SHOW_MENU();
-
             }
             if (event.type == Event::MouseButtonPressed)
             {
                 clickSound.play();
                 // now, if any tile is clicked, see the changes it made i.e. update the orientation
                 // of the connectors
+                if (Mouse::isButtonPressed(sf::Mouse::Left))
+                {
+                    Vector2i pos = Mouse::getPosition(gameWindow) + Vector2i(tileSize/2, tileSize/2) - Vector2i(offset);
+                    pos = pos/tileSize;
+                    if(isOutOfWindow(pos, n)) continue;
+                    std::swap(pos.x, pos.y);
+                    node(pos).orientation++;
+                    node(pos).rotate();
+
+                    for(int i = 0; i < n; i++) {
+                        for(int j = 0; j < n; j++) {
+                            grid[i][j].on = false;
+                        }
+                    }
+
+                    drop(servPos, n);
+                }
             }
         }
         gameWindow.clear();
         gameWindow.draw(bgSprite);
 
         // Update the pipe images according to the new orientation
-        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        // Does not work as expected
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
                 Connector &p = grid[i][j];
                 int kind = p.dirs.size();
 
-                if(kind == 2 && p.dirs[0] == -p.dirs[1]) kind = 0;
+                if (kind == 2 && p.dirs[0] == -p.dirs[1])
+                    kind = 0;
 
                 p.angle += 5;
 
@@ -141,14 +169,12 @@ void SHOW_GAME()
 
                 pipesSprite.setTextureRect(IntRect(tileSize * kind, 0, tileSize, tileSize));
                 pipesSprite.setRotation(p.angle);
-                pipesSprite.setPosition(j*tileSize, i*tileSize);
+                pipesSprite.setPosition(j * tileSize, i * tileSize);
                 pipesSprite.move(offset);
                 compSprite.move(offset);
                 gameWindow.draw(pipesSprite);
             }
         }
-        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
 
         gameWindow.draw(serverSprite);
         gameWindow.display();
@@ -243,7 +269,7 @@ void SHOW_MENU()
         {
             menuWindow.clear(Color::Black);
         }
-        
+
         if (MENU_STATE)
         {
             menu.show(menuWindow);
@@ -252,7 +278,8 @@ void SHOW_MENU()
     }
 }
 
-void init() {
+void init()
+{
     // Sound
     clickSoundBuffer.loadFromFile("sounds/click.ogg");
     clickSound.setBuffer(clickSoundBuffer);
@@ -273,9 +300,9 @@ void init() {
     compSprite.setTexture(comp);
     serverSprite.setTexture(server);
     pipesSprite.setTexture(pipes);
-    pipesSprite.setOrigin(27,27);
-    serverSprite.setOrigin(20,20);
-    compSprite.setOrigin(18,18);
+    pipesSprite.setOrigin(27, 27);
+    serverSprite.setOrigin(20, 20);
+    compSprite.setOrigin(18, 18);
     //* sprite.setTextureRect(sf::IntRect(10, 10, 32, 32)); we can specify rect
     // bgSprite.setTextureRect(IntRect(0, 0, 612, 408));
 }
