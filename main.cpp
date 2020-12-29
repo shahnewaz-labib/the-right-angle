@@ -73,7 +73,7 @@ void SHOW_GAME()
                 // p.rotate(); <<-- Implement this shit
                 for(int n = 0; rand()%4; n++) {
                     grid[i][j].orientation++;
-                    // grid[i][j].rotate(); <<--
+                    grid[i][j].rotate();
                 }
             }
         }

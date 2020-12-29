@@ -13,7 +13,7 @@ class Connector {
         int orientation, angle;
         bool isConnected(sf::Vector2i);
         bool on;
-        // void rotate();
+        void rotate();
         // void rotate() {
         //     for(int i = 0; i < dirs.size(); i++) {
         //         if(dirs[i] == UP) dirs[i] = Right;
