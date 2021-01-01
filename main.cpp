@@ -10,6 +10,8 @@ int N;
 int ts = 54; //tile size
 Vector2f offset(65,55);
 
+Texture t1,t2,t3,t4;
+Sprite sBackground, sComp, sServer, sPipe;
 Menu menu(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
 
 // Sound
@@ -19,7 +21,7 @@ SoundBuffer menuOptionsSoundBuffer, menuEnterPressSoundBuffer;
 Sound menuOptionsSound, menuEnterPressSound;
 
 
-
+void init();
 void game();
 void SHOW_MENU();
 
@@ -98,6 +100,7 @@ void drop(Vector2i v)
 
 
 int main(){
+    init();
     SHOW_MENU();
 }
 
@@ -113,17 +116,6 @@ int main(){
 
 void game()
 {
-    Texture t1,t2,t3,t4;
-    t1.loadFromFile("images/background.png");
-    t2.loadFromFile("images/comp.png");
-    t3.loadFromFile("images/server.png");
-    t4.loadFromFile("images/pipes.png");
-    t4.setSmooth(true);
-
-    Sprite sBackground(t1), sComp(t2), sServer(t3), sPipe(t4);
-    sPipe.setOrigin(27,27);
-    sComp.setOrigin(18,18);
-    sServer.setOrigin(20,20);
 
 
 
@@ -188,6 +180,7 @@ void game()
             if (e.type == Event::MouseButtonPressed)
 				if (Mouse::isButtonPressed(Mouse::Left))
                   {
+                      clickSound.play();
                     Vector2i pos = Mouse::getPosition(app) + Vector2i(ts/2,ts/2) - Vector2i(offset);
                     pos/=ts;
                     if (isOut(pos)) continue;
@@ -254,13 +247,6 @@ void game()
 void SHOW_MENU()
 {
 
-    clickSoundBuffer.loadFromFile("sounds/click.ogg");
-    clickSound.setBuffer(clickSoundBuffer);
-
-    menuOptionsSoundBuffer.loadFromFile("sounds/menuClick.wav");
-    menuEnterPressSoundBuffer.loadFromFile("sounds/enterPressed.wav");
-    menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
-    menuEnterPressSound.setBuffer(menuEnterPressSoundBuffer);
 //     generatePuzzle(N);
 
     // Main game window
@@ -358,3 +344,29 @@ void SHOW_MENU()
     }
 }
 
+void init(){
+    clickSoundBuffer.loadFromFile("sounds/click.ogg");
+    clickSound.setBuffer(clickSoundBuffer);
+
+    menuOptionsSoundBuffer.loadFromFile("sounds/menuClick.wav");
+    menuEnterPressSoundBuffer.loadFromFile("sounds/enterPressed.wav");
+    menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
+    menuEnterPressSound.setBuffer(menuEnterPressSoundBuffer);
+
+
+    t1.loadFromFile("images/background.png");
+    t2.loadFromFile("images/comp.png");
+    t3.loadFromFile("images/server.png");
+    t4.loadFromFile("images/pipes.png");
+    t4.setSmooth(true);
+
+    sBackground.setTexture(t1);
+    sComp.setTexture(t2);
+    sServer.setTexture(t3);
+    sPipe.setTexture(t4);
+
+    sPipe.setOrigin(27,27);
+    sComp.setOrigin(18,18);
+    sServer.setOrigin(20,20);
+
+}
