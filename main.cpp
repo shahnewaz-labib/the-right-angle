@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include <exception>
 #include <time.h>
 #include <iostream>
@@ -11,7 +12,7 @@ int ts = 54; //tile size
 Vector2f offset(65,55);
 
 Texture t1,t2,t3,t4;
-Sprite sBackground, sComp, sServer, sPipe;
+Sprite sBackground, sComp, sServer, sConnector;
 Menu menu(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
 
 // Sound
@@ -26,13 +27,13 @@ void game();
 void SHOW_MENU();
 
 
-struct pipe
+struct Connector
 {
   std::vector<Vector2i> dirs;
   int orientation;
   float angle; bool on;
 
-  pipe() {angle=0;}
+  Connector() {angle=0;}
 
   void rotate()
   {
@@ -52,8 +53,8 @@ struct pipe
 };
 
 
-pipe grid[20][20];
-pipe& cell(Vector2i v) {return grid[v.x][v.y];}
+Connector grid[20][20];
+Connector& cell(Vector2i v) {return grid[v.x][v.y];}
 bool isOut(Vector2i v) {return !IntRect(0,0,N,N).contains(v);}
 
 
@@ -116,8 +117,12 @@ int main(){
 
 void game()
 {
-
-
+    
+    for(int i=0;i<N;i++){
+        for(int j=0;j<N;j++){
+            grid[i][j].on=0;
+        }
+    }
 
     if (menu.currentlevel == 0)
         N = rand() % 7 + 4;
@@ -134,7 +139,7 @@ void game()
     generatePuzzle(N);
     srand(time(0));
 
-    RenderWindow app(VideoMode(N*65, N*65), "The Pipe Puzzle!");
+    RenderWindow app(VideoMode(N*65, N*65), "The Connector Puzzle!");
 
     
     Vector2u TextureSize = t1.getSize();
@@ -150,7 +155,7 @@ void game()
     for(int i=0;i<N;i++)
      for(int j=0;j<N;j++)
        {
-         pipe &p = grid[j][i];
+         Connector &p = grid[j][i];
 
          for(int n=4;n>0;n--) //find orientation//
          {
@@ -210,13 +215,13 @@ void game()
 
         }
 
-        app.clear();
         app.draw(sBackground);
+//         app.clear(Color::White);
 
         for(int i=0;i<N;i++)
          for(int j=0;j<N;j++)
            {
-            pipe &p = grid[j][i];
+            Connector &p = grid[j][i];
 
             int kind = p.dirs.size();
             if (kind==2 && p.dirs[0]==-p.dirs[1]) kind=0;
@@ -224,10 +229,10 @@ void game()
             p.angle+=5;
             if (p.angle>p.orientation*90) p.angle=p.orientation*90;
 
-            sPipe.setTextureRect(IntRect(ts*kind,0,ts,ts));
-            sPipe.setRotation(p.angle);
-            sPipe.setPosition(j*ts,i*ts);sPipe.move(offset);
-            app.draw(sPipe);
+            sConnector.setTextureRect(IntRect(ts*kind,0,ts,ts));
+            sConnector.setRotation(p.angle);
+            sConnector.setPosition(j*ts,i*ts);sConnector.move(offset);
+            app.draw(sConnector);
 
             if (kind==1)
                { if (p.on) sComp.setTextureRect(IntRect(53,0,36,36));
@@ -357,15 +362,15 @@ void init(){
     t1.loadFromFile("images/background.png");
     t2.loadFromFile("images/comp.png");
     t3.loadFromFile("images/server.png");
-    t4.loadFromFile("images/pipes.png");
+    t4.loadFromFile("images/Connector.png");
     t4.setSmooth(true);
 
     sBackground.setTexture(t1);
     sComp.setTexture(t2);
     sServer.setTexture(t3);
-    sPipe.setTexture(t4);
+    sConnector.setTexture(t4);
 
-    sPipe.setOrigin(27,27);
+    sConnector.setOrigin(27,27);
     sComp.setOrigin(18,18);
     sServer.setOrigin(20,20);
 
