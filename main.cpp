@@ -1,12 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <exception>
 #include <time.h>
 #include <iostream>
 #include "menu.h"
 #include "variables.h"
 using namespace sf;
-
-const int N = 6;
+int N;
 int ts = 54; //tile size
 Vector2f offset(65,55);
 
@@ -50,12 +50,12 @@ struct pipe
 };
 
 
-pipe grid[N][N];
+pipe grid[20][20];
 pipe& cell(Vector2i v) {return grid[v.x][v.y];}
 bool isOut(Vector2i v) {return !IntRect(0,0,N,N).contains(v);}
 
 
-void generatePuzzle()
+void generatePuzzle(int N)
 {
   std::vector<Vector2i> nodes;
   nodes.push_back(Vector2i(rand()%N,rand()%N));
@@ -113,10 +113,6 @@ int main(){
 
 void game()
 {
-    srand(time(0));
-
-    RenderWindow app(VideoMode(390, 390), "The Pipe Puzzle!");
-
     Texture t1,t2,t3,t4;
     t1.loadFromFile("images/background.png");
     t2.loadFromFile("images/comp.png");
@@ -130,7 +126,34 @@ void game()
     sServer.setOrigin(20,20);
 
 
-    generatePuzzle();
+
+    if (menu.currentlevel == 0)
+        N = rand() % 7 + 4;
+    else
+        N = menu.currentlevel + 4;
+ 
+    for(int i=0;i<N;i++){
+        for(int j=0;j<N;j++){
+            if(!grid[i][j].dirs.empty())
+                grid[i][j].dirs.clear();
+        }
+    }
+
+    generatePuzzle(N);
+    srand(time(0));
+
+    RenderWindow app(VideoMode(N*65, N*65), "The Pipe Puzzle!");
+
+    
+    Vector2u TextureSize = t1.getSize();
+    Vector2u WindowSize = app.getSize();
+
+    float ScaleX = (float)WindowSize.x / TextureSize.x;
+    float ScaleY = (float)WindowSize.y / TextureSize.y;
+
+    sBackground.setScale(ScaleX, ScaleY); // Scaling the bg according to window size
+
+
 
     for(int i=0;i<N;i++)
      for(int j=0;j<N;j++)
@@ -163,7 +186,7 @@ void game()
                 app.close();
 
             if (e.type == Event::MouseButtonPressed)
-				if (e.key.code == Mouse::Left)
+				if (Mouse::isButtonPressed(Mouse::Left))
                   {
                     Vector2i pos = Mouse::getPosition(app) + Vector2i(ts/2,ts/2) - Vector2i(offset);
                     pos/=ts;
@@ -224,17 +247,13 @@ void game()
         app.draw(sServer);
         app.display();
     }
-    for(int i=0;i<N;i++,std::cout<<'\n'){
-        for(int j=0;j<N;j++){
-            std::cout<<grid[i][j].dirs.size()<<" ";
-        }
-    }
 
 }
 
 
 void SHOW_MENU()
 {
+
     clickSoundBuffer.loadFromFile("sounds/click.ogg");
     clickSound.setBuffer(clickSoundBuffer);
 
@@ -242,7 +261,7 @@ void SHOW_MENU()
     menuEnterPressSoundBuffer.loadFromFile("sounds/enterPressed.wav");
     menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
     menuEnterPressSound.setBuffer(menuEnterPressSoundBuffer);
-
+//     generatePuzzle(N);
 
     // Main game window
     RenderWindow menuWindow(VideoMode(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT), "The Right Angle!");
