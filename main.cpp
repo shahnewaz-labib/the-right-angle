@@ -2,6 +2,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <exception>
+#include <stdexcept>
 #include <time.h>
 #include <iostream>
 #include "menu.h"
@@ -103,10 +104,11 @@ void generatePuzzle(int N)
 
 void drop(Vector2i v)
 {
-    if (cell(v).on)
+    if (cell(v).on){
         return;
+    }
     cell(v).on = true;
-    active_client++;
+    if(cell(v).dirs.size()==1) active_client++;
     for (auto d : DIR)
         if (!isOut(v + d))
             if (cell(v).isConnect(d) && cell(v + d).isConnect(-d))
@@ -153,6 +155,7 @@ void game()
             clients+=(grid[i][j].dirs.size()==1);
         }
     }
+    std::cout<<clients<<"\n";
 
     srand(time(0));
 
@@ -221,6 +224,7 @@ void game()
 
                     active_client=0;
                     drop(servPos);
+//                     std::cout<<active_client<<"\n";
                     if(active_client==clients){
                         std::cout<<"YASS"<<"\n";
                     }
