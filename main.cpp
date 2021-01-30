@@ -11,6 +11,7 @@ int N;
 int ts = 54; //tile size
 Vector2f offset(65, 55);
 
+int active_client=0,clients=0;
 Texture t1, t2, t3, t4;
 Sprite sBackground, sComp, sServer, sConnector;
 Menu menu(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
@@ -105,7 +106,7 @@ void drop(Vector2i v)
     if (cell(v).on)
         return;
     cell(v).on = true;
-
+    active_client++;
     for (auto d : DIR)
         if (!isOut(v + d))
             if (cell(v).isConnect(d) && cell(v + d).isConnect(-d))
@@ -144,6 +145,15 @@ void game()
     }
 
     generatePuzzle(N);
+    clients=0;
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            clients+=(grid[i][j].dirs.size()==1);
+        }
+    }
+
     srand(time(0));
 
     RenderWindow app(VideoMode(N * 65, N * 65), "The Right Angle!");
@@ -209,7 +219,11 @@ void game()
                         for (int j = 0; j < N; j++)
                             grid[j][i].on = 0;
 
+                    active_client=0;
                     drop(servPos);
+                    if(active_client==clients){
+                        std::cout<<"YASS"<<"\n";
+                    }
                 }
             if (Keyboard::isKeyPressed(Keyboard::Escape))
             {
