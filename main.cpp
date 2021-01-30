@@ -13,8 +13,8 @@ int ts = 54; //tile size
 Vector2f offset(65, 55);
 
 int active_client=0,clients=0;
-Texture t1, t2, t3, t4;
-Sprite sBackground, sComp, sServer, sConnector;
+Texture t1, t2, t3, t4, gameOverTexture, menuTexture;
+Sprite sBackground, sComp, sServer, sConnector, sGameOver, sMenu;
 Menu menu(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
 
 // Sound
@@ -22,6 +22,10 @@ SoundBuffer clickSoundBuffer;
 Sound clickSound;
 SoundBuffer menuOptionsSoundBuffer, menuEnterPressSoundBuffer;
 Sound menuOptionsSound, menuEnterPressSound;
+
+sf::Text gameOverText;
+sf::Font gameOverFont;
+
 
 void init();
 void game();
@@ -117,6 +121,7 @@ void drop(Vector2i v)
 
 int main()
 {
+    srand(time(0));
     init();
     SHOW_MENU();
 }
@@ -155,9 +160,7 @@ void game()
             clients+=(grid[i][j].dirs.size()==1);
         }
     }
-    std::cout<<clients<<"\n";
-
-    srand(time(0));
+    // srand(time(0));
 
     RenderWindow app(VideoMode(N * 65, N * 65), "The Right Angle!");
 
@@ -184,11 +187,11 @@ void game()
                 p.rotate();
             }
 
-            for (int n = 0; n < rand() % 4; n++) //shuffle//
+            /*for (int n = 0; n < rand() % 4; n++) //shuffle//
             {
                 grid[j][i].orientation++;
                 grid[j][i].rotate();
-            }
+            }*/
         }
 
     Vector2i servPos;
@@ -201,50 +204,7 @@ void game()
 
     while (app.isOpen())
     {
-        Event e;
-        while (app.pollEvent(e))
-        {
-            if (e.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q))
-                app.close();
 
-            if (e.type == Event::MouseButtonPressed)
-                if (Mouse::isButtonPressed(Mouse::Left))
-                {
-                    clickSound.play();
-                    Vector2i pos = Mouse::getPosition(app) + Vector2i(ts / 2, ts / 2) - Vector2i(offset);
-                    pos /= ts;
-                    if (isOut(pos))
-                        continue;
-                    cell(pos).orientation++;
-                    cell(pos).rotate();
-
-                    for (int i = 0; i < N; i++)
-                        for (int j = 0; j < N; j++)
-                            grid[j][i].on = 0;
-
-                    active_client=0;
-                    drop(servPos);
-//                     std::cout<<active_client<<"\n";
-                    if(active_client==clients){
-                        std::cout<<"YASS"<<"\n";
-                    }
-                }
-            if (Keyboard::isKeyPressed(Keyboard::Escape))
-            {
-                menuEnterPressSound.play();
-
-#ifdef __linux__
-//                 usleep(1000000 / 5);
-#elif _WIN32
-//                 sleep(1000 / 5);
-#endif
-
-                MENU_STATE = true;
-                GAME_STATE = false;
-                app.close();
-                SHOW_MENU();
-            }
-        }
 
         app.draw(sBackground);
         //         app.clear(Color::White);
@@ -280,8 +240,82 @@ void game()
                 }
             }
 
+        //>>>>>>
+                    Event e;
+                    while (app.pollEvent(e))
+                    {
+                        if (e.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q))
+                            app.close();
+
+                        if (e.type == Event::MouseButtonPressed)
+                            if (Mouse::isButtonPressed(Mouse::Left))
+                            {
+                                clickSound.play();
+                                Vector2i pos = Mouse::getPosition(app) + Vector2i(ts / 2, ts / 2) - Vector2i(offset);
+                                pos /= ts;
+                                if (isOut(pos))
+                                    continue;
+                                cell(pos).orientation++;
+                                cell(pos).rotate();
+
+                                for (int i = 0; i < N; i++)
+                                    for (int j = 0; j < N; j++)
+                                        grid[j][i].on = 0;
+
+                                active_client=0;
+                                drop(servPos);
+            //                     std::cout<<active_client<<"\n";
+                                if(active_client==clients){
+                                    std::cout<<"YASS"<<"\n";
+                                    RenderWindow gameOverWindow(VideoMode(8*50, 8*50), "adfadf");
+                                    sf::Clock clock;
+                                    int cnt=0;
+
+                                    while(gameOverWindow.isOpen()) {
+
+                                        Event event;
+                                        while(gameOverWindow.pollEvent(event)) {
+                                            if(event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q)) {
+                                                gameOverWindow.close();
+                                            }
+                                        }
+                                        cnt%=1000;
+                                        cnt++;
+                                        gameOverWindow.clear(Color::Black);
+                                        if(cnt < 333) gameOverText.setColor(Color::Green); 
+                                        else if(cnt < 666) gameOverText.setColor(Color::Red);
+                                        else gameOverText.setColor(Color::Yellow);
+
+                                        if(clock.getElapsedTime().asSeconds() >= 5) gameOverWindow.close();
+                                        gameOverWindow.draw(sGameOver);
+                                        gameOverWindow.draw(gameOverText);
+                                        gameOverWindow.display();
+                                    }
+                                }
+                            }
+                        if (Keyboard::isKeyPressed(Keyboard::Escape))
+                        {
+                            menuEnterPressSound.play();
+
+            #ifdef __linux__
+            //                 usleep(1000000 / 5);
+            #elif _WIN32
+            //                 sleep(1000 / 5);
+            #endif
+
+                            MENU_STATE = true;
+                            GAME_STATE = false;
+                            app.close();
+                            SHOW_MENU();
+                        }
+                    }
+        //<<<<<<
+
         app.draw(sServer);
         app.display();
+
+
+
     }
 }
 
@@ -374,7 +408,8 @@ void SHOW_MENU()
         }
         if (MENU_STATE)
         {
-            menuWindow.clear(Color::Black);
+            // menuWindow.clear(Color::Black);
+            menuWindow.draw(sMenu);
         }
 
         if (MENU_STATE)
@@ -395,18 +430,34 @@ void init()
     menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
     menuEnterPressSound.setBuffer(menuEnterPressSoundBuffer);
 
-    t1.loadFromFile("images/background.png");
+    t1.loadFromFile("images/gameBG.jpg");
     t2.loadFromFile("images/comp.png");
     t3.loadFromFile("images/server.png");
     t4.loadFromFile("images/Connector.png");
     t4.setSmooth(true);
 
+    gameOverTexture.loadFromFile("images/rsz_shei2.png");
+    gameOverTexture.setSmooth(true);
+
+    menuTexture.loadFromFile("images/menuBG.jpg");
+
     sBackground.setTexture(t1);
     sComp.setTexture(t2);
     sServer.setTexture(t3);
     sConnector.setTexture(t4);
+    sGameOver.setTexture(gameOverTexture);
+    sMenu.setTexture(menuTexture);
 
     sConnector.setOrigin(27, 27);
     sComp.setOrigin(18, 18);
     sServer.setOrigin(20, 20);
+
+    gameOverFont.loadFromFile("fonts/mrsmonsterital.ttf");
+    gameOverText.setFont(gameOverFont);
+
+    gameOverText.setFont(gameOverFont); 
+    gameOverText.setColor(Color::Green); 
+    gameOverText.setString("SHEI! MAMA JITSEN"); 
+    gameOverText.setPosition(Vector2f(50, 100));
 }
+

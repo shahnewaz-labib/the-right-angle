@@ -14,7 +14,7 @@ using namespace sf;
 }
 
 Menu::Menu(float menuWidth, float menuHeight) {
-    menuTextFont.loadFromFile("fonts/3Dumb.ttf");
+    menuTextFont.loadFromFile("fonts/mrsmonsterital.ttf");
     selectedOptionIndex = 0;
     int x=50,y=100;
 
