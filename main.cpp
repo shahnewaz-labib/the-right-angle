@@ -137,10 +137,8 @@ int main()
 
 void game()
 {
-    // >>>>>>>>>>>>
     music.play();
     music.setLoop(true);
-    //<<<<<<<<<<<<<
 
     for (int i = 0; i < N; i++)
     {
@@ -221,7 +219,6 @@ void game()
 
 
         app.draw(sBackground);
-        //         app.clear(Color::White);
 
         for (int i = 0; i < N; i++)
             for (int j = 0; j < N; j++)
@@ -408,19 +405,6 @@ void SHOW_MENU()
                 }
             }
 
-            /* EITUKU RUN KORENA
-            if (GAME_STATE)
-            {
-                printf("here\n");
-                // Esc pressed, return to menu state
-                if (Keyboard::isKeyPressed(Keyboard::Escape))
-                {
-                    MENU_STATE = true;
-                    GAME_STATE = false;
-
-                    game();
-                }
-            }*/
         }
         if (MENU_STATE)
         {
