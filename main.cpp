@@ -25,6 +25,9 @@ Sound clickSound;
 SoundBuffer menuOptionsSoundBuffer, menuEnterPressSoundBuffer;
 Sound menuOptionsSound, menuEnterPressSound;
 
+Music music;
+
+
 sf::Text gameOverText;
 sf::Font gameOverFont;
 
@@ -130,6 +133,10 @@ int main()
 
 void game()
 {
+    // >>>>>>>>>>>>
+    music.play();
+    music.setLoop(true);
+    //<<<<<<<<<<<<<
 
     for (int i = 0; i < N; i++)
     {
@@ -188,12 +195,13 @@ void game()
                     p.orientation = n;
                 p.rotate();
             }
-
-            /*for (int n = 0; n < rand() % 4; n++) //shuffle//
+            /*
+            for (int n = 0; n < rand() % 4; n++) //shuffle//
             {
                 grid[j][i].orientation++;
                 grid[j][i].rotate();
-            }*/
+            }
+            */
         }
 
     Vector2i servPos;
@@ -242,7 +250,6 @@ void game()
                 }
             }
 
-        //>>>>>>
                     Event e;
                     while (app.pollEvent(e))
                     {
@@ -266,8 +273,8 @@ void game()
 
                                 active_client=0;
                                 drop(servPos);
-            //                     std::cout<<active_client<<"\n";
                                 if(active_client==clients){
+                                    music.setLoop(false);
                                     std::cout<<"YASS"<<"\n";
                                     RenderWindow gameOverWindow(VideoMode(8*50, 8*50), "!!!GAME OVER!!!");
                                     sf::Clock clock;
@@ -311,7 +318,6 @@ void game()
                             SHOW_MENU();
                         }
                     }
-        //<<<<<<
 
         app.draw(sServer);
         app.display();
@@ -323,9 +329,7 @@ void game()
 
 void SHOW_MENU()
 {
-
-    //     generatePuzzle(N);
-
+    music.stop();
     // Main game window
     RenderWindow menuWindow(VideoMode(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT), "The Right Angle!");
     menuWindow.setKeyRepeatEnabled(false);
@@ -396,8 +400,10 @@ void SHOW_MENU()
                 }
             }
 
+            /* EITUKU RUN KORENA
             if (GAME_STATE)
             {
+                printf("here\n");
                 // Esc pressed, return to menu state
                 if (Keyboard::isKeyPressed(Keyboard::Escape))
                 {
@@ -406,7 +412,7 @@ void SHOW_MENU()
 
                     game();
                 }
-            }
+            }*/
         }
         if (MENU_STATE)
         {
@@ -459,7 +465,11 @@ void init()
 
     gameOverText.setFont(gameOverFont); 
     gameOverText.setColor(Color::Green); 
+    gameOverText.setOutlineColor(Color::White);
     gameOverText.setString("SHEI! MAMA JITSEN"); 
-    gameOverText.setPosition(Vector2f(50, 100));
+    gameOverText.setPosition(Vector2f(75, 0));
+
+    music.openFromFile("sounds/bgmusic.wav");
+
 }
 
