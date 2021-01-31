@@ -22,8 +22,12 @@ Menu menu(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
 // Sound
 SoundBuffer clickSoundBuffer;
 Sound clickSound;
+
 SoundBuffer menuOptionsSoundBuffer, menuEnterPressSoundBuffer;
 Sound menuOptionsSound, menuEnterPressSound;
+
+SoundBuffer wowSoundBuffer;
+Sound wowSound;
 
 Music music;
 
@@ -273,8 +277,11 @@ void game()
 
                                 active_client=0;
                                 drop(servPos);
+                                // Win state
                                 if(active_client==clients){
+                                    music.pause();
                                     music.setLoop(false);
+                                    wowSound.play();
                                     std::cout<<"YASS"<<"\n";
                                     RenderWindow gameOverWindow(VideoMode(8*50, 8*50), "!!!GAME OVER!!!");
                                     sf::Clock clock;
@@ -295,11 +302,12 @@ void game()
                                         else if(cnt < 666) gameOverText.setColor(Color::Red);
                                         else gameOverText.setColor(Color::Yellow);
 
-                                        if(clock.getElapsedTime().asSeconds() >= 5) gameOverWindow.close();
+                                        if(clock.getElapsedTime().asSeconds() >= 3) gameOverWindow.close();
                                         gameOverWindow.draw(sGameOver);
                                         gameOverWindow.draw(gameOverText);
                                         gameOverWindow.display();
                                     }
+                                    music.play();
                                 }
                             }
                         if (Keyboard::isKeyPressed(Keyboard::Escape))
@@ -435,8 +443,10 @@ void init()
 
     menuOptionsSoundBuffer.loadFromFile("sounds/menuClick.wav");
     menuEnterPressSoundBuffer.loadFromFile("sounds/enterPressed.wav");
+    wowSoundBuffer.loadFromFile("sounds/wow.wav");
     menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
     menuEnterPressSound.setBuffer(menuEnterPressSoundBuffer);
+    wowSound.setBuffer(wowSoundBuffer);
 
     t1.loadFromFile("images/gameBG.jpg");
     t2.loadFromFile("images/comp.png");
