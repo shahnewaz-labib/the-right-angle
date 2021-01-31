@@ -1,3 +1,5 @@
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -267,7 +269,7 @@ void game()
             //                     std::cout<<active_client<<"\n";
                                 if(active_client==clients){
                                     std::cout<<"YASS"<<"\n";
-                                    RenderWindow gameOverWindow(VideoMode(8*50, 8*50), "adfadf");
+                                    RenderWindow gameOverWindow(VideoMode(8*50, 8*50), "!!!GAME OVER!!!");
                                     sf::Clock clock;
                                     int cnt=0;
 
