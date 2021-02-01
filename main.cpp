@@ -9,6 +9,7 @@
 #include <iostream>
 #include "menu.h"
 #include "variables.h"
+#define GAMEOVERTEXT "You have solved the puzzle!"
 using namespace sf;
 int N;
 int ts = 54; //tile size
@@ -280,7 +281,7 @@ void game()
                                     // music.setLoop(false);
                                     wowSound.play();
                                     std::cout<<"YASS"<<"\n";
-                                    RenderWindow gameOverWindow(VideoMode(8*50, 8*50), "!!!GAME OVER!!!");
+                                    RenderWindow gameOverWindow(VideoMode(500, 500), "!!!GAME OVER!!!");
                                     sf::Clock clock;
                                     int cnt=0;
 
@@ -460,10 +461,10 @@ void init()
     gameOverText.setFont(gameOverFont); 
     gameOverText.setColor(Color::Green); 
     gameOverText.setOutlineColor(Color::White);
-    gameOverText.setString("SHEI! MAMA JITSEN"); 
-    gameOverText.setPosition(Vector2f(75, 0));
+    gameOverText.setString(GAMEOVERTEXT); 
+    gameOverText.setPosition(Vector2f(75, 20));
 
     music.openFromFile("sounds/bgmusic.wav");
-    music.setVolume(10.f);
+    music.setVolume(50.f);
 }
 
