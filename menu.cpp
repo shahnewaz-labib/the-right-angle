@@ -1,3 +1,4 @@
+#include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Text.hpp>
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -22,15 +23,17 @@ Menu::Menu(float menuWidth, float menuHeight) {
 
     addEntry(LevelText, menuTextFont, Color::White, "Level : Random", x+ 170, y);
 
+
     for(int i = 1; i < NUMBER_OF_OPTIONS; i++){
         y += 70;
         addEntry(menuText[i], menuTextFont, Color::White, menucaption[i], x, y);
     } 
+    addEntry(musicVolumeText,menuTextFont, Color::White, "Volume : 50%", x+170, y-70*1);
 }
 
 void Menu::musictoggle(){
-    music^=1;
-    if(music){
+    musicState=1;
+    if(musicState){
         menuText[2].setString("Music : ON");
     } else {
         menuText[2].setString("Music : OFF");
@@ -48,6 +51,7 @@ void Menu::levelup(){
     }    
 }
 
+
 void Menu::leveldown(){
     currentlevel = (currentlevel - 1+totallevels) % totallevels;
     if(currentlevel==0){
@@ -56,7 +60,22 @@ void Menu::leveldown(){
         LevelText.setString("Level : " + std::to_string(currentlevel));
     }    
 }
-
+void Menu::volup(sf::Music &music){
+    if(currentvol==90) 
+        currentvol=100;
+    else
+        currentvol=(currentvol+10)%100;
+    music.setVolume(currentvol); 
+    musicVolumeText.setString("Volume : "+std::to_string(currentvol)+"%");
+}
+void Menu::voldown(sf::Music &music){
+    if(currentvol==10)
+        currentvol=100;
+    else
+        currentvol=(currentvol-10+100)%100;
+    music.setVolume(currentvol); 
+    musicVolumeText.setString("Volume : "+std::to_string(currentvol)+"%");
+}
 
 
 
@@ -65,6 +84,7 @@ void Menu::show(RenderWindow &menuWindow) {
         menuWindow.draw(menuText[i]);
     }
     menuWindow.draw(LevelText);
+    menuWindow.draw(musicVolumeText);
 }
 
 

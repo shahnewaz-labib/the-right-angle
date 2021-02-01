@@ -139,7 +139,7 @@ int main()
 
 void game()
 {
-    if(menu.music)
+    if(menu.musicState)
         music.play();
     music.setLoop(true);
 
@@ -402,15 +402,21 @@ void SHOW_MENU()
                 }
               
                 if(Keyboard::isKeyPressed(Keyboard::Right)){
-                    menuOptionsSound.play();
                     if(menu.selectedOptionIndex==OPTION_INDEX::Change_Level){
+                        menuOptionsSound.play();
                         menu.levelup();
+                    } else if(menu.selectedOptionIndex==OPTION_INDEX::Options){
+                        menuOptionsSound.play();
+                        menu.volup(music);
                     }
                 }
                 if(Keyboard::isKeyPressed(Keyboard::Left)){
-                    menuOptionsSound.play();
                     if(menu.selectedOptionIndex==OPTION_INDEX::Change_Level){
+                        menuOptionsSound.play();
                         menu.leveldown();
+                    } else if(menu.selectedOptionIndex==OPTION_INDEX::Options){
+                        menuOptionsSound.play();
+                        menu.voldown(music);
                     }
                 }
 
@@ -475,6 +481,6 @@ void init()
     gameOverText.setPosition(Vector2f(75, 10));
 
     music.openFromFile("sounds/bgmusic.wav");
-    music.setVolume(50.f);
+    music.setVolume(50);
 }
 

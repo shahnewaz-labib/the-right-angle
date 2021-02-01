@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics/Text.hpp>
 #ifndef MENU
 #define MENU
@@ -19,15 +20,16 @@ public:
     void musictoggle();
     void levelup();
     void leveldown();
-    bool music=1;
-    int selectedOptionIndex;
-    int currentlevel;
+    void volup(sf::Music &music);
+    void voldown(sf::Music &music);
+    bool musicState=1;
+    int selectedOptionIndex=0,currentlevel=0,currentvol=50;
     std::string menucaption[NUMBER_OF_OPTIONS]={"Play","Change Level","Music : ON","Exit"};
 
 private:
     sf::Font menuTextFont;
     sf::Text menuText[NUMBER_OF_OPTIONS];
-    sf::Text LevelText;
+    sf::Text LevelText,musicVolumeText;
 };
 
 #endif
