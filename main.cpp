@@ -335,7 +335,7 @@ void game()
                         music.pause();
                         // music.setLoop(false);
                         wowSound.play();
-                        RenderWindow gameOverWindow(VideoMode(500, 500), "!!!GAME OVER!!!");
+                        RenderWindow gameOverWindow(VideoMode(500, 650), "!!!GAME OVER!!!");
                         sf::Clock clock;
                         int cnt = 0;
 
@@ -517,7 +517,7 @@ void init()
     t4.loadFromFile("images/Connector.png");
     t4.setSmooth(true);
 
-    gameOverTexture.loadFromFile("images/rsz_shei2.png");
+    gameOverTexture.loadFromFile("images/gameOverBg.png");
     gameOverTexture.setSmooth(true);
 
     menuTexture.loadFromFile("images/menuBG.jpg");
