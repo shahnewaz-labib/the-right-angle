@@ -498,7 +498,7 @@ void SHOW_MENU()
         menuWindow.display();
     }
 }
-
+#ifdef __linux__
 void init()
 {
     clickSoundBuffer.loadFromFile("sounds/click.ogg");
@@ -545,3 +545,51 @@ void init()
     music.openFromFile("sounds/bgmusic.wav");
     music.setVolume(50);
 }
+#elif
+void init()
+{
+    clickSoundBuffer.loadFromFile("sounds\click.ogg");
+    clickSound.setBuffer(clickSoundBuffer);
+
+    menuOptionsSoundBuffer.loadFromFile("sounds\menuClick.wav");
+    menuEnterPressSoundBuffer.loadFromFile("sounds\enterPressed.wav");
+    wowSoundBuffer.loadFromFile("sounds\wow.wav");
+    menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
+    menuEnterPressSound.setBuffer(menuEnterPressSoundBuffer);
+    wowSound.setBuffer(wowSoundBuffer);
+
+    t1.loadFromFile("images\gameBG.jpg");
+    t2.loadFromFile("images\comp.png");
+    t3.loadFromFile("images\server.png");
+    t4.loadFromFile("images\Connector.png");
+    t4.setSmooth(true);
+
+    gameOverTexture.loadFromFile("images\gameOverBg.png");
+    gameOverTexture.setSmooth(true);
+
+    menuTexture.loadFromFile("images\menuBG.jpg");
+
+    sBackground.setTexture(t1);
+    sComp.setTexture(t2);
+    sServer.setTexture(t3);
+    sConnector.setTexture(t4);
+    sGameOver.setTexture(gameOverTexture);
+    sMenu.setTexture(menuTexture);
+
+    sConnector.setOrigin(27, 27);
+    sComp.setOrigin(18, 18);
+    sServer.setOrigin(20, 20);
+
+    gameOverFont.loadFromFile("fonts\mrsmonsterital.ttf");
+    gameOverText.setFont(gameOverFont);
+
+    gameOverText.setFont(gameOverFont);
+    gameOverText.setColor(Color::Green);
+    gameOverText.setOutlineColor(Color::White);
+    gameOverText.setString(GAMEOVERTEXT);
+    gameOverText.setPosition(Vector2f(75, 10));
+
+    music.openFromFile("sounds\bgmusic.wav");
+    music.setVolume(50);
+}
+#endif
