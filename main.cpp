@@ -545,29 +545,29 @@ void init()
     music.openFromFile("sounds/bgmusic.wav");
     music.setVolume(50);
 }
-#elif
+#else
 void init()
 {
-    clickSoundBuffer.loadFromFile("sounds\click.ogg");
+    clickSoundBuffer.loadFromFile("sounds\\click.ogg");
     clickSound.setBuffer(clickSoundBuffer);
 
-    menuOptionsSoundBuffer.loadFromFile("sounds\menuClick.wav");
-    menuEnterPressSoundBuffer.loadFromFile("sounds\enterPressed.wav");
-    wowSoundBuffer.loadFromFile("sounds\wow.wav");
+    menuOptionsSoundBuffer.loadFromFile("sounds\\menuClick.wav");
+    menuEnterPressSoundBuffer.loadFromFile("sounds\\enterPressed.wav");
+    wowSoundBuffer.loadFromFile("sounds\\wow.wav");
     menuOptionsSound.setBuffer(menuOptionsSoundBuffer);
     menuEnterPressSound.setBuffer(menuEnterPressSoundBuffer);
     wowSound.setBuffer(wowSoundBuffer);
 
-    t1.loadFromFile("images\gameBG.jpg");
-    t2.loadFromFile("images\comp.png");
-    t3.loadFromFile("images\server.png");
-    t4.loadFromFile("images\Connector.png");
+    t1.loadFromFile("images\\gameBG.jpg");
+    t2.loadFromFile("images\\comp.png");
+    t3.loadFromFile("images\\server.png");
+    t4.loadFromFile("images\\Connector.png");
     t4.setSmooth(true);
 
-    gameOverTexture.loadFromFile("images\gameOverBg.png");
+    gameOverTexture.loadFromFile("images\\gameOverBg.png");
     gameOverTexture.setSmooth(true);
 
-    menuTexture.loadFromFile("images\menuBG.jpg");
+    menuTexture.loadFromFile("images\\menuBG.jpg");
 
     sBackground.setTexture(t1);
     sComp.setTexture(t2);
@@ -580,7 +580,7 @@ void init()
     sComp.setOrigin(18, 18);
     sServer.setOrigin(20, 20);
 
-    gameOverFont.loadFromFile("fonts\mrsmonsterital.ttf");
+    gameOverFont.loadFromFile("fonts\\mrsmonsterital.ttf");
     gameOverText.setFont(gameOverFont);
 
     gameOverText.setFont(gameOverFont);
@@ -589,7 +589,7 @@ void init()
     gameOverText.setString(GAMEOVERTEXT);
     gameOverText.setPosition(Vector2f(75, 10));
 
-    music.openFromFile("sounds\bgmusic.wav");
+    music.openFromFile("sounds\\bgmusic.wav");
     music.setVolume(50);
 }
 #endif

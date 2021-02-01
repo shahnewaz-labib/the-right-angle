@@ -17,8 +17,8 @@ using namespace sf;
 Menu::Menu(float menuWidth, float menuHeight) {
 #ifdef __linux__
     menuTextFont.loadFromFile("fonts/mrsmonsterital.ttf");
-#elif
-    menuTextFont.loadFromFile("fonts\mrsmonsterital.ttf");
+#else
+    menuTextFont.loadFromFile("fonts\\mrsmonsterital.ttf");
 #endif
     selectedOptionIndex = 0;
     int x=50,y=100;
