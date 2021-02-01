@@ -1,6 +1,6 @@
-#include <SFML/Window/Keyboard.hpp>
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
+#include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -10,18 +10,22 @@
 #include <iostream>
 #include "menu.h"
 #include "variables.h"
+
 #define GAMEOVERTEXT "You have solved the puzzle!\nPress Esc to exit to main menu"
+
 using namespace sf;
-int N;
+
+int N;       // Puzzle size
 int ts = 54; //tile size
 Vector2f offset(65, 55);
 
-int active_client=0,clients=0;
+int active_client = 0, clients = 0;
+// Textures
 Texture t1, t2, t3, t4, gameOverTexture, menuTexture;
 Sprite sBackground, sComp, sServer, sConnector, sGameOver, sMenu;
 Menu menu(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
 
-// Sound
+// Sounds
 SoundBuffer clickSoundBuffer;
 Sound clickSound;
 
@@ -31,12 +35,11 @@ Sound menuOptionsSound, menuEnterPressSound;
 SoundBuffer wowSoundBuffer;
 Sound wowSound;
 
+// Music
 Music music;
 
-
-sf::Text gameOverText;
-sf::Font gameOverFont;
-
+Text gameOverText;
+Font gameOverFont;
 
 void init();
 void game();
@@ -49,33 +52,55 @@ struct Connector
     float angle;
     bool on;
 
-    Connector() { angle = 0; }
+    // Constructor
+    Connector()
+    {
+        angle = 0;
+    }
 
     void rotate()
     {
         for (int i = 0; i < dirs.size(); i++)
             if (dirs[i] == Up)
+            {
                 dirs[i] = Right;
+            }
             else if (dirs[i] == Right)
+            {
                 dirs[i] = Down;
+            }
             else if (dirs[i] == Down)
+            {
                 dirs[i] = Left;
+            }
             else if (dirs[i] == Left)
+            {
                 dirs[i] = Up;
+            }
     }
 
     bool isConnect(Vector2i dir)
     {
         for (auto d : dirs)
+        {
             if (d == dir)
+            {
                 return true;
+            }
+        }
         return false;
     }
 };
 
 Connector grid[20][20];
-Connector &cell(Vector2i v) { return grid[v.x][v.y]; }
-bool isOut(Vector2i v) { return !IntRect(0, 0, N, N).contains(v); }
+Connector &cell(Vector2i v)
+{
+    return grid[v.x][v.y];
+}
+bool isOut(Vector2i v)
+{ // To check if the point is within the game Window
+    return !IntRect(0, 0, N, N).contains(v);
+}
 
 void generatePuzzle(int N)
 {
@@ -94,23 +119,34 @@ void generatePuzzle(int N)
             continue;
         }
         if (cell(v).dirs.size() == 2)
+        {
             if (rand() % 50)
+            {
                 continue;
+            }
+        }
 
         bool complete = 1;
         for (auto D : DIR)
+        {
             if (!isOut(v + D) && cell(v + D).dirs.empty())
+            {
                 complete = 0;
+            }
+        }
+
         if (complete)
         {
             nodes.erase(nodes.begin() + n);
             continue;
         }
 
-        if (isOut(v + d))
+        if (isOut(v + d)) {
             continue;
-        if (!cell(v + d).dirs.empty())
+        }
+        if (!cell(v + d).dirs.empty()) {
             continue;
+        }
         cell(v).dirs.push_back(d);
         cell(v + d).dirs.push_back(-d);
         nodes.push_back(v + d);
@@ -119,15 +155,22 @@ void generatePuzzle(int N)
 
 void drop(Vector2i v)
 {
-    if (cell(v).on){
+    if (cell(v).on)
+    {
         return;
     }
     cell(v).on = true;
-    if(cell(v).dirs.size()==1) active_client++;
-    for (auto d : DIR)
-        if (!isOut(v + d))
-            if (cell(v).isConnect(d) && cell(v + d).isConnect(-d))
+    if (cell(v).dirs.size() == 1) {
+        active_client++;
+    }
+    for (auto d : DIR) {
+        if (!isOut(v + d)) {
+            if (cell(v).isConnect(d) && cell(v + d).isConnect(-d)) {
                 drop(v + d);
+            }
+        }
+    }
+        
 }
 
 int main()
@@ -139,8 +182,9 @@ int main()
 
 void game()
 {
-    if(menu.musicState)
+    if (menu.musicState) {
         music.play();
+    }
     music.setLoop(true);
 
     for (int i = 0; i < N; i++)
@@ -151,10 +195,12 @@ void game()
         }
     }
 
-    if (menu.currentlevel == 0)
+    if (menu.currentlevel == 0) {
         N = rand() % totallevels + 4;
-    else
+    }
+    else {
         N = menu.currentlevel + 4;
+    }
 
     for (int i = 0; i < N; i++)
     {
@@ -166,12 +212,12 @@ void game()
     }
 
     generatePuzzle(N);
-    clients=0;
+    clients = 0;
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
         {
-            clients+=(grid[i][j].dirs.size()==1);
+            clients += (grid[i][j].dirs.size() == 1);
         }
     }
     // srand(time(0));
@@ -194,10 +240,12 @@ void game()
             for (int n = 4; n > 0; n--) //find orientation//
             {
                 std::string s = "";
-                for (auto d : DIR)
+                for (auto d : DIR) {
                     s += p.isConnect(d) ? '1' : '0';
-                if (s == "0011" || s == "0111" || s == "0101" || s == "0010")
+                }
+                if (s == "0011" || s == "0111" || s == "0101" || s == "0010") {
                     p.orientation = n;
+                }
                 p.rotate();
             }
             /*
@@ -220,10 +268,9 @@ void game()
     while (app.isOpen())
     {
 
-
         app.draw(sBackground);
 
-        for (int i = 0; i < N; i++)
+        for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++)
             {
                 Connector &p = grid[j][i];
@@ -253,85 +300,94 @@ void game()
                     app.draw(sComp);
                 }
             }
+        }
+            
 
-                    Event e;
-                    while (app.pollEvent(e))
+        Event e;
+        while (app.pollEvent(e))
+        {
+            if (e.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q)) {
+                app.close();
+            }
+
+            if (e.type == Event::MouseButtonPressed) {
+
+            }
+                if (Mouse::isButtonPressed(Mouse::Left))
+                {
+                    clickSound.play();
+                    Vector2i pos = Mouse::getPosition(app) + Vector2i(ts / 2, ts / 2) - Vector2i(offset);
+                    pos /= ts;
+                    if (isOut(pos))
+                        continue;
+                    cell(pos).orientation++;
+                    cell(pos).rotate();
+
+                    for (int i = 0; i < N; i++)
+                        for (int j = 0; j < N; j++)
+                            grid[j][i].on = 0;
+
+                    active_client = 0;
+                    drop(servPos);
+                    // Win state
+                    if (active_client == clients)
                     {
-                        if (e.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q))
-                            app.close();
+                        music.pause();
+                        // music.setLoop(false);
+                        wowSound.play();
+                        RenderWindow gameOverWindow(VideoMode(500, 500), "!!!GAME OVER!!!");
+                        sf::Clock clock;
+                        int cnt = 0;
 
-                        if (e.type == Event::MouseButtonPressed)
-                            if (Mouse::isButtonPressed(Mouse::Left))
+                        while (gameOverWindow.isOpen())
+                        {
+
+                            Event event;
+                            while (gameOverWindow.pollEvent(event))
                             {
-                                clickSound.play();
-                                Vector2i pos = Mouse::getPosition(app) + Vector2i(ts / 2, ts / 2) - Vector2i(offset);
-                                pos /= ts;
-                                if (isOut(pos))
-                                    continue;
-                                cell(pos).orientation++;
-                                cell(pos).rotate();
-
-                                for (int i = 0; i < N; i++)
-                                    for (int j = 0; j < N; j++)
-                                        grid[j][i].on = 0;
-
-                                active_client=0;
-                                drop(servPos);
-                                // Win state
-                                if(active_client==clients){
-                                    music.pause();
-                                    // music.setLoop(false);
-                                    wowSound.play();
-//                                     std::cout<<"YASS"<<"\n";
-                                    RenderWindow gameOverWindow(VideoMode(500, 500), "!!!GAME OVER!!!");
-                                    sf::Clock clock;
-                                    int cnt=0;
-
-                                    while(gameOverWindow.isOpen()) {
-
-                                        Event event;
-                                        while(gameOverWindow.pollEvent(event)) {
-                                            if(event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q)) {
-                                                gameOverWindow.close();
-                                            }
-                                        }
-                                        cnt%=1000;
-                                        cnt++;
-                                        gameOverWindow.clear(Color::Black);
-                                        if(cnt < 333) gameOverText.setColor(Color::Green); 
-                                        else if(cnt < 666) gameOverText.setColor(Color::Red);
-                                        else gameOverText.setColor(Color::Yellow);
-
-                                        if(clock.getElapsedTime().asSeconds() >= 3) gameOverWindow.close();
-                                        gameOverWindow.draw(sGameOver);
-                                        gameOverWindow.draw(gameOverText);
-                                        gameOverWindow.display();
-                                    }
-                                    music.play();
+                                if (event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q))
+                                {
+                                    gameOverWindow.close();
                                 }
                             }
-                        if (Keyboard::isKeyPressed(Keyboard::Escape))
-                        {
-                            menuEnterPressSound.play();
+                            cnt %= 1000;
+                            cnt++;
+                            gameOverWindow.clear(Color::Black);
+                            if (cnt < 333)
+                                gameOverText.setColor(Color::Green);
+                            else if (cnt < 666)
+                                gameOverText.setColor(Color::Red);
+                            else
+                                gameOverText.setColor(Color::Yellow);
 
-            #ifdef __linux__
-            //                 usleep(1000000 / 5);
-            #elif _WIN32
-            //                 sleep(1000 / 5);
-            #endif
-
-                            MENU_STATE = true;
-                            GAME_STATE = false;
-                            app.close();
-                            SHOW_MENU();
+                            if (clock.getElapsedTime().asSeconds() >= 3)
+                                gameOverWindow.close();
+                            gameOverWindow.draw(sGameOver);
+                            gameOverWindow.draw(gameOverText);
+                            gameOverWindow.display();
                         }
+                        music.play();
                     }
+                }
+            if (Keyboard::isKeyPressed(Keyboard::Escape))
+            {
+                menuEnterPressSound.play();
+
+#ifdef __linux__
+//                 usleep(1000000 / 5);
+#elif _WIN32
+//                 sleep(1000 / 5);
+#endif
+
+                MENU_STATE = true;
+                GAME_STATE = false;
+                app.close();
+                SHOW_MENU();
+            }
+        }
 
         app.draw(sServer);
         app.display();
-
-
-
     }
 }
 
@@ -401,32 +457,37 @@ void SHOW_MENU()
                     menuOptionsSound.play();
                     menu.goDown();
                 }
-              
-                if(Keyboard::isKeyPressed(Keyboard::Right)){
-                    if(menu.selectedOptionIndex==OPTION_INDEX::Change_Level){
+
+                if (Keyboard::isKeyPressed(Keyboard::Right))
+                {
+                    if (menu.selectedOptionIndex == OPTION_INDEX::Change_Level)
+                    {
                         menuOptionsSound.play();
                         menu.levelup();
-                    } else if(menu.selectedOptionIndex==OPTION_INDEX::Options){
+                    }
+                    else if (menu.selectedOptionIndex == OPTION_INDEX::Options)
+                    {
                         menuOptionsSound.play();
                         menu.volup(music);
                     }
                 }
-                if(Keyboard::isKeyPressed(Keyboard::Left)){
-                    if(menu.selectedOptionIndex==OPTION_INDEX::Change_Level){
+                if (Keyboard::isKeyPressed(Keyboard::Left))
+                {
+                    if (menu.selectedOptionIndex == OPTION_INDEX::Change_Level)
+                    {
                         menuOptionsSound.play();
                         menu.leveldown();
-                    } else if(menu.selectedOptionIndex==OPTION_INDEX::Options){
+                    }
+                    else if (menu.selectedOptionIndex == OPTION_INDEX::Options)
+                    {
                         menuOptionsSound.play();
                         menu.voldown(music);
                     }
                 }
-
             }
-
         }
         if (MENU_STATE)
         {
-            // menuWindow.clear(Color::Black);
             menuWindow.draw(sMenu);
         }
 
@@ -475,13 +536,12 @@ void init()
     gameOverFont.loadFromFile("fonts/mrsmonsterital.ttf");
     gameOverText.setFont(gameOverFont);
 
-    gameOverText.setFont(gameOverFont); 
-    gameOverText.setColor(Color::Green); 
+    gameOverText.setFont(gameOverFont);
+    gameOverText.setColor(Color::Green);
     gameOverText.setOutlineColor(Color::White);
-    gameOverText.setString(GAMEOVERTEXT); 
+    gameOverText.setString(GAMEOVERTEXT);
     gameOverText.setPosition(Vector2f(75, 10));
 
     music.openFromFile("sounds/bgmusic.wav");
     music.setVolume(50);
 }
-
