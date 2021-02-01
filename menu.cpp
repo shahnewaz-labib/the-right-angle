@@ -48,6 +48,16 @@ void Menu::levelup(){
     }    
 }
 
+void Menu::leveldown(){
+    currentlevel = (currentlevel - 1+totallevels) % totallevels;
+    if(currentlevel==0){
+        LevelText.setString("Level : Random");
+    } else {
+        LevelText.setString("Level : " + std::to_string(currentlevel));
+    }    
+}
+
+
 
 
 void Menu::show(RenderWindow &menuWindow) {

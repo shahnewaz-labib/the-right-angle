@@ -18,6 +18,7 @@ public:
     void goDown();
     void musictoggle();
     void levelup();
+    void leveldown();
     bool music=1;
     int selectedOptionIndex;
     int currentlevel;

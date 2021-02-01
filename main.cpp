@@ -1,3 +1,4 @@
+#include <SFML/Window/Keyboard.hpp>
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 #include <SFML/Graphics.hpp>
@@ -373,7 +374,7 @@ void SHOW_MENU()
                             return;
                             break;
                         case OPTION_INDEX::Change_Level:
-                            // Added level cycling
+                            menuOptionsSound.play();
                             menu.levelup();
                             break;
                         case OPTION_INDEX::Options:
@@ -399,12 +400,20 @@ void SHOW_MENU()
                     menuOptionsSound.play();
                     menu.goDown();
                 }
-                if (Keyboard::isKeyPressed(Keyboard::Return))
-                {
-                    // menuOptionsSound.play();
-                    if (menu.selectedOptionIndex != 3)
-                        menuEnterPressSound.play();
+              
+                if(Keyboard::isKeyPressed(Keyboard::Right)){
+                    menuOptionsSound.play();
+                    if(menu.selectedOptionIndex==OPTION_INDEX::Change_Level){
+                        menu.levelup();
+                    }
                 }
+                if(Keyboard::isKeyPressed(Keyboard::Left)){
+                    menuOptionsSound.play();
+                    if(menu.selectedOptionIndex==OPTION_INDEX::Change_Level){
+                        menu.leveldown();
+                    }
+                }
+
             }
 
         }
