@@ -277,7 +277,7 @@ void game()
                                 // Win state
                                 if(active_client==clients){
                                     music.pause();
-                                    music.setLoop(false);
+                                    // music.setLoop(false);
                                     wowSound.play();
                                     std::cout<<"YASS"<<"\n";
                                     RenderWindow gameOverWindow(VideoMode(8*50, 8*50), "!!!GAME OVER!!!");
@@ -464,6 +464,6 @@ void init()
     gameOverText.setPosition(Vector2f(75, 0));
 
     music.openFromFile("sounds/bgmusic.wav");
-
+    music.setVolume(10.f);
 }
 
