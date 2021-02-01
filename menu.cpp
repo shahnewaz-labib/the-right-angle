@@ -28,6 +28,15 @@ Menu::Menu(float menuWidth, float menuHeight) {
     } 
 }
 
+void Menu::musictoggle(){
+    music^=1;
+    if(music){
+        menuText[2].setString("Music : ON");
+    } else {
+        menuText[2].setString("Music : OFF");
+    }
+}
+
 
 
 void Menu::levelup(){

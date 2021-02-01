@@ -138,7 +138,8 @@ int main()
 
 void game()
 {
-    music.play();
+    if(menu.music)
+        music.play();
     music.setLoop(true);
 
     for (int i = 0; i < N; i++)
@@ -376,7 +377,7 @@ void SHOW_MENU()
                             menu.levelup();
                             break;
                         case OPTION_INDEX::Options:
-                            // Do something cool
+                            menu.musictoggle();
                             break;
                         case OPTION_INDEX::Exit:
                             // Exit button pressed, close game
