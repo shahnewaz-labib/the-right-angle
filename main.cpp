@@ -45,46 +45,36 @@ void init();
 void game();
 void SHOW_MENU();
 
-struct Connector
-{
+struct Connector {
     std::vector<Vector2i> dirs;
     int orientation;
     float angle;
     bool on;
 
     // Constructor
-    Connector()
-    {
+    Connector() {
         angle = 0;
     }
 
-    void rotate()
-    {
+    void rotate() {
         for (int i = 0; i < dirs.size(); i++)
-            if (dirs[i] == Up)
-            {
+            if (dirs[i] == Up) {
                 dirs[i] = Right;
             }
-            else if (dirs[i] == Right)
-            {
+            else if (dirs[i] == Right) {
                 dirs[i] = Down;
             }
-            else if (dirs[i] == Down)
-            {
+            else if (dirs[i] == Down) {
                 dirs[i] = Left;
             }
-            else if (dirs[i] == Left)
-            {
+            else if (dirs[i] == Left) {
                 dirs[i] = Up;
             }
     }
 
-    bool isConnect(Vector2i dir)
-    {
-        for (auto d : dirs)
-        {
-            if (d == dir)
-            {
+    bool isConnect(Vector2i dir) {
+        for (auto d : dirs) {
+            if (d == dir) {
                 return true;
             }
         }
@@ -93,50 +83,40 @@ struct Connector
 };
 
 Connector grid[20][20];
-Connector &cell(Vector2i v)
-{
+Connector &cell(Vector2i v) {
     return grid[v.x][v.y];
 }
-bool isOut(Vector2i v)
-{ // To check if the point is within the game Window
+bool isOut(Vector2i v) { // To check if the point is within the game Window
     return !IntRect(0, 0, N, N).contains(v);
 }
 
-void generatePuzzle(int N)
-{
+void generatePuzzle(int N) {
     std::vector<Vector2i> nodes;
     nodes.push_back(Vector2i(rand() % N, rand() % N));
 
-    while (!nodes.empty())
-    {
+    while (!nodes.empty()) {
         int n = rand() % nodes.size();
         Vector2i v = nodes[n];
         Vector2i d = DIR[rand() % 4];
 
-        if (cell(v).dirs.size() == 3)
-        {
+        if (cell(v).dirs.size() == 3) {
             nodes.erase(nodes.begin() + n);
             continue;
         }
-        if (cell(v).dirs.size() == 2)
-        {
-            if (rand() % 50)
-            {
+        if (cell(v).dirs.size() == 2) {
+            if (rand() % 50) {
                 continue;
             }
         }
 
         bool complete = 1;
-        for (auto D : DIR)
-        {
-            if (!isOut(v + D) && cell(v + D).dirs.empty())
-            {
+        for (auto D : DIR) {
+            if (!isOut(v + D) && cell(v + D).dirs.empty()) {
                 complete = 0;
             }
         }
 
-        if (complete)
-        {
+        if (complete) {
             nodes.erase(nodes.begin() + n);
             continue;
         }
@@ -153,10 +133,8 @@ void generatePuzzle(int N)
     }
 }
 
-void drop(Vector2i v)
-{
-    if (cell(v).on)
-    {
+void drop(Vector2i v) {
+    if (cell(v).on) {
         return;
     }
     cell(v).on = true;
@@ -173,20 +151,16 @@ void drop(Vector2i v)
         
 }
 
-int main()
-{
+int main() {
     srand(time(0));
     init();
     SHOW_MENU();
 }
 
-void game()
-{
+void game() {
 
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
             grid[i][j].on = 0;
         }
     }
@@ -198,10 +172,8 @@ void game()
         N = menu.currentlevel + 4;
     }
 
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
             if (!grid[i][j].dirs.empty())
                 grid[i][j].dirs.clear();
         }
@@ -209,10 +181,8 @@ void game()
 
     generatePuzzle(N);
     clients = 0;
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
             clients += (grid[i][j].dirs.size() == 1);
         }
     }
@@ -229,12 +199,10 @@ void game()
     sBackground.setScale(ScaleX, ScaleY); // Scaling the bg according to window size
 
     for (int i = 0; i < N; i++)
-        for (int j = 0; j < N; j++)
-        {
+        for (int j = 0; j < N; j++) {
             Connector &p = grid[j][i];
 
-            for (int n = 4; n > 0; n--) //find orientation//
-            {
+            for (int n = 4; n > 0; n--){ //find orientation// 
                 std::string s = "";
                 for (auto d : DIR) {
                     s += p.isConnect(d) ? '1' : '0';
@@ -245,8 +213,7 @@ void game()
                 p.rotate();
             }
             /*
-            for (int n = 0; n < rand() % 4; n++) //shuffle//
-            {
+            for (int n = 0; n < rand() % 4; n++){ //shuffle// 
                 grid[j][i].orientation++;
                 grid[j][i].rotate();
             }
@@ -254,21 +221,18 @@ void game()
         }
 
     Vector2i servPos;
-    while (cell(servPos).dirs.size() == 1)
-    {
+    while (cell(servPos).dirs.size() == 1) {
         servPos = Vector2i(rand() % N, rand() % N);
     }
     sServer.setPosition(Vector2f(servPos * ts));
     sServer.move(offset);
 
-    while (app.isOpen())
-    {
+    while (app.isOpen()) {
 
         app.draw(sBackground);
 
         for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++)
-            {
+            for (int j = 0; j < N; j++) {
                 Connector &p = grid[j][i];
 
                 int kind = p.dirs.size();
@@ -285,8 +249,7 @@ void game()
                 sConnector.move(offset);
                 app.draw(sConnector);
 
-                if (kind == 1)
-                {
+                if (kind == 1) {
                     if (p.on)
                         sComp.setTextureRect(IntRect(53, 0, 36, 36));
                     else
@@ -300,8 +263,7 @@ void game()
             
 
         Event e;
-        while (app.pollEvent(e))
-        {
+        while (app.pollEvent(e)) {
             if (e.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q)) {
                 app.close();
             }
@@ -309,8 +271,7 @@ void game()
             if (e.type == Event::MouseButtonPressed) {
 
             }
-                if (Mouse::isButtonPressed(Mouse::Left))
-                {
+                if (Mouse::isButtonPressed(Mouse::Left)) {
                     clickSound.play();
                     Vector2i pos = Mouse::getPosition(app) + Vector2i(ts / 2, ts / 2) - Vector2i(offset);
                     pos /= ts;
@@ -326,8 +287,7 @@ void game()
                     active_client = 0;
                     drop(servPos);
                     // Win state
-                    if (active_client == clients)
-                    {
+                    if (active_client == clients) {
                         music.pause();
                         // music.setLoop(false);
                         wowSound.play();
@@ -335,14 +295,11 @@ void game()
                         sf::Clock clock;
                         int cnt = 0;
 
-                        while (gameOverWindow.isOpen())
-                        {
+                        while (gameOverWindow.isOpen()) {
 
                             Event event;
-                            while (gameOverWindow.pollEvent(event))
-                            {
-                                if (event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q))
-                                {
+                            while (gameOverWindow.pollEvent(event)) {
+                                if (event.type == Event::Closed or Keyboard::isKeyPressed(Keyboard::Q)) {
                                     gameOverWindow.close();
                                 }
                             }
@@ -362,11 +319,13 @@ void game()
                             gameOverWindow.draw(gameOverText);
                             gameOverWindow.display();
                         }
-                        music.play();
+                        if(menu.musicState){
+                            music.play();
+                            musicIsPlaying=1;
+                        }
                     }
                 }
-            if (Keyboard::isKeyPressed(Keyboard::Escape))
-            {
+            if (Keyboard::isKeyPressed(Keyboard::Escape)) {
                 menuEnterPressSound.play();
 
 #ifdef __linux__
@@ -387,8 +346,7 @@ void game()
     }
 }
 
-void SHOW_MENU()
-{
+void SHOW_MENU() {
     if(menu.musicState && !musicIsPlaying){
         music.play();
         musicIsPlaying=1;
@@ -399,29 +357,22 @@ void SHOW_MENU()
     RenderWindow menuWindow(VideoMode(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT), "The Right Angle!");
     menuWindow.setKeyRepeatEnabled(false);
 
-    while (menuWindow.isOpen())
-    {
+    while (menuWindow.isOpen()) {
         // To capture keypresses
         Event event;
 
         // Handle KB or Mouse actions
-        while (menuWindow.pollEvent(event))
-        {
+        while (menuWindow.pollEvent(event)) {
 
-            if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Key::Q))
-            {
+            if (event.type == Event::Closed || Keyboard::isKeyPressed(Keyboard::Key::Q)) {
                 menuWindow.close();
                 exit(0);
             }
 
-            if (MENU_STATE)
-            {
-                if (event.type == Event::KeyReleased)
-                {
-                    if (event.key.code == Keyboard::Return)
-                    {
-                        switch (menu.selectedOptionIndex)
-                        {
+            if (MENU_STATE) {
+                if (event.type == Event::KeyReleased) {
+                    if (event.key.code == Keyboard::Return) {
+                        switch (menu.selectedOptionIndex) {
                         case OPTION_INDEX::Play:
                             // Play button pressed, enter game state
                             MENU_STATE = false;
@@ -448,60 +399,49 @@ void SHOW_MENU()
                         }
                     }
                 }
-                if (Keyboard::isKeyPressed(Keyboard::Up))
-                {
+                if (Keyboard::isKeyPressed(Keyboard::Up)) {
                     menuOptionsSound.play();
                     menu.goUp();
                 }
-                if (Keyboard::isKeyPressed(Keyboard::Down))
-                {
+                if (Keyboard::isKeyPressed(Keyboard::Down)) {
                     menuOptionsSound.play();
                     menu.goDown();
                 }
 
-                if (Keyboard::isKeyPressed(Keyboard::Right))
-                {
-                    if (menu.selectedOptionIndex == OPTION_INDEX::Change_Level)
-                    {
+                if (Keyboard::isKeyPressed(Keyboard::Right)) {
+                    if (menu.selectedOptionIndex == OPTION_INDEX::Change_Level) {
                         menuOptionsSound.play();
                         menu.levelup();
                     }
-                    else if (menu.selectedOptionIndex == OPTION_INDEX::Options)
-                    {
+                    else if (menu.selectedOptionIndex == OPTION_INDEX::Options) {
                         menuOptionsSound.play();
                         menu.volup(music);
                     }
                 }
-                if (Keyboard::isKeyPressed(Keyboard::Left))
-                {
-                    if (menu.selectedOptionIndex == OPTION_INDEX::Change_Level)
-                    {
+                if (Keyboard::isKeyPressed(Keyboard::Left)) {
+                    if (menu.selectedOptionIndex == OPTION_INDEX::Change_Level) {
                         menuOptionsSound.play();
                         menu.leveldown();
                     }
-                    else if (menu.selectedOptionIndex == OPTION_INDEX::Options)
-                    {
+                    else if (menu.selectedOptionIndex == OPTION_INDEX::Options) {
                         menuOptionsSound.play();
                         menu.voldown(music);
                     }
                 }
             }
         }
-        if (MENU_STATE)
-        {
+        if (MENU_STATE) {
             menuWindow.draw(sMenu);
         }
 
-        if (MENU_STATE)
-        {
+        if (MENU_STATE) {
             menu.show(menuWindow);
         }
         menuWindow.display();
     }
 }
 #ifdef __linux__
-void init()
-{
+void init() {
     clickSoundBuffer.loadFromFile("sounds/click.ogg");
     clickSound.setBuffer(clickSoundBuffer);
 
@@ -547,8 +487,7 @@ void init()
     music.setVolume(50);
 }
 #else
-void init()
-{
+void init() {
     clickSoundBuffer.loadFromFile("sounds\\click.ogg");
     clickSound.setBuffer(clickSoundBuffer);
 
