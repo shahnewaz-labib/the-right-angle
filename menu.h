@@ -17,7 +17,7 @@ public:
     void show(sf::RenderWindow &menuWindow);
     void goUp();
     void goDown();
-    void musictoggle();
+    void musictoggle(sf::Music &music);
     void levelup();
     void leveldown();
     void volup(sf::Music &music);

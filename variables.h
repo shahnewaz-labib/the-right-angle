@@ -18,7 +18,7 @@ float GAME_WINDOW_HEIGHT = 500;
 bool MENU_STATE = true;
 bool GAME_STATE = false;
 bool KEY_PRESSED = false;
-
+bool musicIsPlaying = 0;
 // Connector directions
 sf::Vector2i Up( 0, -1);
 sf::Vector2i Down( 0, 1);

@@ -35,12 +35,17 @@ Menu::Menu(float menuWidth, float menuHeight) {
     addEntry(musicVolumeText,menuTextFont, Color::White, "Volume : 50%", x+170, y-70*1);
 }
 
-void Menu::musictoggle(){
+void Menu::musictoggle(sf::Music &music){
     musicState^=1;
+    extern bool musicIsPlaying;
     if(musicState){
         menuText[2].setString("Music : ON");
+        musicIsPlaying=1;
+        music.play();
     } else {
         menuText[2].setString("Music : OFF");
+        musicIsPlaying=0;
+        music.stop();
     }
 }
 

@@ -182,10 +182,6 @@ int main()
 
 void game()
 {
-    if (menu.musicState) {
-        music.play();
-    }
-    music.setLoop(true);
 
     for (int i = 0; i < N; i++)
     {
@@ -393,7 +389,12 @@ void game()
 
 void SHOW_MENU()
 {
-    music.stop();
+    if(menu.musicState && !musicIsPlaying){
+        music.play();
+        musicIsPlaying=1;
+    }
+
+    music.setLoop(true);
     // Main game window
     RenderWindow menuWindow(VideoMode(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT), "The Right Angle!");
     menuWindow.setKeyRepeatEnabled(false);
@@ -435,7 +436,7 @@ void SHOW_MENU()
                             break;
                         case OPTION_INDEX::Options:
                             menuOptionsSound.play();
-                            menu.musictoggle();
+                            menu.musictoggle(music);
                             break;
                         case OPTION_INDEX::Exit:
                             // Exit button pressed, close game
