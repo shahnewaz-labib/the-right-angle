@@ -32,7 +32,7 @@ Menu::Menu(float menuWidth, float menuHeight) {
 }
 
 void Menu::musictoggle(){
-    musicState=1;
+    musicState^=1;
     if(musicState){
         menuText[2].setString("Music : ON");
     } else {

@@ -378,6 +378,7 @@ void SHOW_MENU()
                             menu.levelup();
                             break;
                         case OPTION_INDEX::Options:
+                            menuOptionsSound.play();
                             menu.musictoggle();
                             break;
                         case OPTION_INDEX::Exit:
