@@ -151,7 +151,7 @@ void game()
     }
 
     if (menu.currentlevel == 0)
-        N = rand() % 7 + 4;
+        N = rand() % totallevels + 4;
     else
         N = menu.currentlevel + 4;
 

@@ -20,7 +20,7 @@ Menu::Menu(float menuWidth, float menuHeight) {
 
     addEntry(menuText[0],menuTextFont, Color::Red, menucaption[0] , x, y);
 
-    addEntry(LevelText, menuTextFont, Color::White, "Level : " + levels[0] , x+ 170, y);
+    addEntry(LevelText, menuTextFont, Color::White, "Level : Random", x+ 170, y);
 
     for(int i = 1; i < NUMBER_OF_OPTIONS; i++){
         y += 70;
@@ -41,7 +41,11 @@ void Menu::musictoggle(){
 
 void Menu::levelup(){
     currentlevel = (currentlevel + 1) % totallevels;
-    LevelText.setString("Level : " + levels[currentlevel]);    
+    if(currentlevel==0){
+        LevelText.setString("Level : Random");
+    } else {
+        LevelText.setString("Level : " + std::to_string(currentlevel));
+    }    
 }
 
 
