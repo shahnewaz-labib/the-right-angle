@@ -1,4 +1,4 @@
-main.exe: main.o menu.o connector.o
+main.exe: main.o menu.o
 	g++ main.o menu.o -o main.exe -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 main.o: main.cpp

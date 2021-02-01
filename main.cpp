@@ -212,12 +212,12 @@ void game() {
                 }
                 p.rotate();
             }
-            /*
+
             for (int n = 0; n < rand() % 4; n++){ //shuffle// 
                 grid[j][i].orientation++;
                 grid[j][i].rotate();
             }
-            */
+            
         }
 
     Vector2i servPos;
