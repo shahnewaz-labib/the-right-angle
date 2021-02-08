@@ -6,7 +6,7 @@
 # Features
 - Completely random puzzle each time.
 - The available levels are: Random, 1, 2, ... ,7
-- This is fun
+- This is fun.
 
 
 # The Menu

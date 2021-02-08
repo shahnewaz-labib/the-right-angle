@@ -162,6 +162,9 @@ void game() {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
             grid[i][j].on = 0;
+            if(!grid[i][j].dirs.empty()) {
+                grid[i][j].clear();
+            }
         }
     }
 
@@ -170,13 +173,6 @@ void game() {
     }
     else {
         N = menu.currentlevel + 4;
-    }
-
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < N; j++) {
-            if (!grid[i][j].dirs.empty())
-                grid[i][j].dirs.clear();
-        }
     }
 
     generatePuzzle(N);
