@@ -163,7 +163,7 @@ void game() {
         for (int j = 0; j < N; j++) {
             grid[i][j].on = 0;
             if(!grid[i][j].dirs.empty()) {
-                grid[i][j].clear();
+                grid[i][j].dirs.clear();
             }
         }
     }
