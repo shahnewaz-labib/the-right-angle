@@ -1,5 +1,4 @@
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>

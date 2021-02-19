@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for i in `ls *.cpp`;do 
+    grep "${i}" Makefile || sed -i "/clean:/ i obj/${i/.*}.o: $i\n\tg++ --std=c++17 -c $i -o \$@\n" Makefile
+done
+
+for i in `ls *.h`;do 
+    grep "${i}" Makefile || sed -i "/${i/.*}.o:/ s/$/ $i/" Makefile
+done

@@ -1,5 +1,4 @@
 #pragma once
-
 #include <SFML/Audio/Music.hpp>
 #include <SFML/Graphics/Text.hpp>
 #ifndef MENU

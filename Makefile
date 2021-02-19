@@ -1,12 +1,15 @@
-main.exe: main.o menu.o
-	g++ main.o menu.o -o main.exe -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+_OBJ=$(patsubst %.cpp,%.o,$(wildcard *.cpp))
+OBJ=$(patsubst %,obj/%,$(_OBJ))
+LIBS=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
-main.o: main.cpp
-	g++ -std=c++11 -c main.cpp
+Program: $(OBJ)
+	g++ $(OBJ) -o $@ $(LIBS)
 
-menu.o: menu.cpp menu.h
-	g++ -std=c++11 -c menu.cpp
+obj/main.o: main.cpp
+	g++ --std=c++17 -c main.cpp -o $@
+
+obj/menu.o: menu.cpp menu.h
+	g++ --std=c++17 -c menu.cpp -o $@
 
 clean:
-	rm *.o
-	rm *.exe
+	rm $(OBJ)
